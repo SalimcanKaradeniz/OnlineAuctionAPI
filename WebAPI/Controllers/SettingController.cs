@@ -201,6 +201,13 @@ namespace WebAPI.Controllers
             return Ok(_socialMediaSettingsService.GetSocialMediaSettings());
         }
 
+        [HttpGet]
+        [Route("/socialmediatypes")]
+        public IActionResult GetSocialMediaTypes()
+        {
+            return Ok(_socialMediaSettingsService.GetSocialMediaTypes());
+        }
+
         [HttpPost]
         [Route("/socialmediasettings/add")]
         public IActionResult SocialMediaSettingAdd([FromBody] SocialMediaSettings model)

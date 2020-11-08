@@ -13,22 +13,14 @@ namespace OnlineAuction.Data.DbEntity
         {
             this.CreatedAt = DateTime.Now;
         }
-
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [MaxLength(250)]
-        public string FacebookUrl { get; set; }
-        [MaxLength(250)]
-        public string TwitterUrl { get; set; }
-        [MaxLength(250)]
-        public string LinkedinUrl { get; set; }
-        [MaxLength(250)]
-        public string InstagramUrl { get; set; }
-        [MaxLength(250)]
-        public string PinterestUrl { get; set; }
-        [MaxLength(250)]
-        public string YoutubeUrl { get; set; }
+        public string Address { get; set; }
+        public int SocialMediaTypesId { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        public SocialMediaTypes SocialMediaTypes { get; set; }
     }
 }

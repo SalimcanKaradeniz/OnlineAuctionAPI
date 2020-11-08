@@ -6,10 +6,10 @@ using System.Text;
 
 namespace OnlineAuction.Data.DbEntity
 {
-    [Table("Languages")]
-    public class Languages
+    [Table("PageBanner")]
+    public class PageBanner
     {
-        public Languages()
+        public PageBanner()
         {
             this.CreatedAt = DateTime.Now;
         }
@@ -17,9 +17,13 @@ namespace OnlineAuction.Data.DbEntity
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        [MaxLength(50)]
-        public string Name { get; set; }
-        public bool IsActive { get; set; }
+        public int PageId { get; set; }
+        [MaxLength]
+        public string PictureUrl { get; set; }
         public DateTime CreatedAt { get; set; }
+
+        [ForeignKey("PageId")]
+        public Pages Page { get; set; }
     }
+
 }

@@ -68,6 +68,7 @@ namespace OnlineAuction.Services.Languages
                 if (language != null)
                 {
                     language.Name = model.Name;
+                    language.Code = model.Code;
                     language.IsActive = model.IsActive;
 
                     _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Languages>().Update(language);
@@ -151,7 +152,7 @@ namespace OnlineAuction.Services.Languages
             }
         }
 
-        public OnlineAuction.Data.DbEntity.Languages GetLangaugeById(int id) 
+        public OnlineAuction.Data.DbEntity.Languages GetLangaugeById(int id)
         {
             return _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Languages>().GetFirstOrDefault(predicate: x => x.Id == id);
         }

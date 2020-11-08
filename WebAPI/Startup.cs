@@ -23,6 +23,7 @@ using OnlineAuction.Services.Languages;
 using OnlineAuction.Services.SiteSettingsService;
 using OnlineAuction.Services.SocialMediaSettingsService;
 using OnlineAuction.Services.Users;
+using OnlineAuction.Services.Pages;
 
 namespace WebAPI
 {
@@ -38,7 +39,14 @@ namespace WebAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            services.AddCors(options =>
+            {
+                options.AddPolicy(
+                        "AllowOrigin",
+                        builder => builder.WithOrigins("*")
+                    );
+            });
 
             AppSettings appSettings = new AppSettings();
             Configuration.Bind(appSettings);
@@ -108,7 +116,7 @@ namespace WebAPI
             services.AddTransient<ISiteSettingsService, SiteSettingsService>();
             services.AddTransient<IFormSettingsService, FormSettingsService>();
             services.AddTransient<ISocialMediaSettingsService, SocialMediaSettingsService>();
-
+            services.AddTransient<IPageService, PageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -119,6 +127,7 @@ namespace WebAPI
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors(builder => builder.WithOrigins("*").AllowAnyHeader());
             app.UseHttpsRedirection();
 
             app.UseRouting();

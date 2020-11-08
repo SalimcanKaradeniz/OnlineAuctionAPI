@@ -38,6 +38,7 @@ namespace WebAPI.Controllers
                 if (!userLogin.IsSuccess)
                     return Unauthorized(returnModel);
 
+                returnModel.IsSuccess = true;
                 returnModel.Data = userLogin.Data;
 
                 return Ok(returnModel);
@@ -47,7 +48,7 @@ namespace WebAPI.Controllers
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Model doğrulanamadı";
 
-                return Ok();
+                return BadRequest();
             }
         }
     }

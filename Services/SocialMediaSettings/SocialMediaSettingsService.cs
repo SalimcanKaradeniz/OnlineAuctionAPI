@@ -5,7 +5,7 @@ using OnlineAuction.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
+using Microsoft.EntityFrameworkCore;
 using System.Text;
 
 namespace OnlineAuction.Services.SocialMediaSettingsService
@@ -20,7 +20,7 @@ namespace OnlineAuction.Services.SocialMediaSettingsService
 
         public List<SocialMediaSettings> GetSocialMediaSettings()
         {
-            return _unitOfWork.GetRepository<SocialMediaSettings>().GetAll().ToList();
+            return _unitOfWork.GetRepository<SocialMediaSettings>().GetAll(include: x => x.Include(s => s.SocialMediaTypes)).ToList();
         }
 
         public ReturnModel<object> Add(SocialMediaSettings model)
@@ -144,9 +144,15 @@ namespace OnlineAuction.Services.SocialMediaSettingsService
             }
         }
 
-        public SocialMediaSettings GetSocialMediaSettingsById(int id) 
+        public SocialMediaSettings GetSocialMediaSettingsById(int id)
         {
-            return _unitOfWork.GetRepository<SocialMediaSettings>().GetFirstOrDefault(predicate: x => x.Id == id);
+            return _unitOfWork.GetRepository<SocialMediaSettings>().GetFirstOrDefault(predicate: x => x.Id == id, include: source => source.Include(source => source.SocialMediaTypes));
         }
+
+        public List<SocialMediaTypes> GetSocialMediaTypes()
+        {
+            return _unitOfWork.GetRepository<SocialMediaTypes>().GetAll().ToList();
+        }
+
     }
 }

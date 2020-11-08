@@ -13,5 +13,6 @@ namespace OnlineAuction.Services.SocialMediaSettingsService
         ReturnModel<object> Update(SocialMediaSettings model);
         ReturnModel<object> Delete(int id);
         SocialMediaSettings GetSocialMediaSettingsById(int id);
+        List<SocialMediaTypes> GetSocialMediaTypes();
     }
 }
