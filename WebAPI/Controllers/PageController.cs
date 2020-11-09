@@ -48,7 +48,7 @@ namespace WebAPI.Controllers
 
         [HttpGet]
         [Route("/pagespecifications")]
-        public IActionResult GetPageSpecifications() 
+        public IActionResult GetPageSpecifications()
         {
             return Ok(_pageService.GetPageSpecifications());
         }

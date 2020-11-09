@@ -19,8 +19,10 @@ namespace OnlineAuction.Data.DbEntity
         [MaxLength(250)]
         public string Address { get; set; }
         public int SocialMediaTypesId { get; set; }
+        public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
 
+        //[ForeignKey("SocialMediaTypeId")]
         public SocialMediaTypes SocialMediaTypes { get; set; }
     }
 }

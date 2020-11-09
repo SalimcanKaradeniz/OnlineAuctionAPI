@@ -28,7 +28,7 @@ namespace OnlineAuction.Services.Pages
             if (id <= 0)
                 return new OnlineAuction.Data.DbEntity.Pages();
 
-            return _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Pages>().GetFirstOrDefault(predicate: x => x.Id == id, include: source => source.Include(b => b.PageBanners));
+            return _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Pages>().GetFirstOrDefault(predicate: x => x.Id == id, include: source => source.Include(b => b.PageBanners).Include(spf => spf.PageSpecification));
         }
 
         public List<PageSpecifications> GetPageSpecifications()
@@ -39,14 +39,13 @@ namespace OnlineAuction.Services.Pages
         public ReturnModel<object> Add(OnlineAuction.Data.DbEntity.Pages model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
-            List<PageBanner> pageBanners = new List<PageBanner>();
 
             using (var transaction = _unitOfWork.DbContext.Database.BeginTransaction())
             {
                 try
                 {
                     var page = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Pages>().Insert(model);
-                   
+
                     var result = _unitOfWork.SaveChanges();
                     if (result > 0)
                     {

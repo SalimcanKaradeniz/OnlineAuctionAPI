@@ -59,10 +59,14 @@ namespace OnlineAuction.Services.SocialMediaSettingsService
 
             try
             {
-                var socialMediaSetting = GetSocialMediaSettingsById(model.Id);
+                var socialMediaSetting = _unitOfWork.GetRepository<SocialMediaSettings>().GetFirstOrDefault(predicate: x => x.Id == model.Id);
 
                 if (socialMediaSetting != null)
                 {
+                    socialMediaSetting.Address = model.Address;
+                    socialMediaSetting.SocialMediaTypesId = model.SocialMediaTypesId;
+                    socialMediaSetting.IsActive = model.IsActive;
+
                     _unitOfWork.GetRepository<SocialMediaSettings>().Update(socialMediaSetting);
 
                     int result = _unitOfWork.SaveChanges();
