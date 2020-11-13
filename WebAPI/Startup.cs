@@ -24,6 +24,7 @@ using OnlineAuction.Services.SiteSettingsService;
 using OnlineAuction.Services.SocialMediaSettingsService;
 using OnlineAuction.Services.Users;
 using OnlineAuction.Services.Pages;
+using Services.News;
 
 namespace WebAPI
 {
@@ -117,6 +118,7 @@ namespace WebAPI
             services.AddTransient<IFormSettingsService, FormSettingsService>();
             services.AddTransient<ISocialMediaSettingsService, SocialMediaSettingsService>();
             services.AddTransient<IPageService, PageService>();
+            services.AddTransient<INewsService, NewsService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -9,6 +9,11 @@ namespace OnlineAuction.Data.DbEntity
     [Table("News")]
     public class News
     {
+        public News()
+        {
+            this.CreatedAt = DateTime.Now;
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
