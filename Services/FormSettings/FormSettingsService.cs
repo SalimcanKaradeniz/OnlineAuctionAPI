@@ -2,6 +2,7 @@
 using OnlineAuction.Data.Context;
 using OnlineAuction.Data.DbEntity;
 using OnlineAuction.Data.Models;
+using OnlineAuction.Services.Log;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +14,13 @@ namespace OnlineAuction.Services.FormSettingsService
     public class FormSettingsService : IFormSettingsService
     {
         private readonly IUnitOfWork<OnlineAuctionContext> _unitOfWork;
-        public FormSettingsService(IUnitOfWork<OnlineAuctionContext> unitOfWork)
-        {
+        private readonly IAppContext _appContext;
+        private readonly IServiceProvider _serviceProvider;
+        public FormSettingsService(IUnitOfWork<OnlineAuctionContext> unitOfWork, IAppContext appContext, IServiceProvider serviceProvider)
+        {                                                                       
             _unitOfWork = unitOfWork;
+            _serviceProvider = serviceProvider;
+            _appContext = appContext;
         }
 
         public List<FormSettings> GetFormSettings()
@@ -47,6 +52,7 @@ namespace OnlineAuction.Services.FormSettingsService
             }
             catch (Exception ex)
             {
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Form Ayarları Eklenirken hata oluştu";
                 return returnModel;
@@ -90,6 +96,7 @@ namespace OnlineAuction.Services.FormSettingsService
             }
             catch (Exception ex)
             {
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Form Ayarları düzenlenirken hata oluştu";
                 return returnModel;
@@ -139,6 +146,7 @@ namespace OnlineAuction.Services.FormSettingsService
             }
             catch (Exception ex)
             {
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Form Ayarları silinirken hata oluştu";
                 return returnModel;

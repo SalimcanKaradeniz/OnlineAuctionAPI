@@ -5,6 +5,7 @@ using Microsoft.Extensions.Options;
 using OnlineAuction.Data.DbEntity;
 using OnlineAuction.Data.Models;
 using OnlineAuction.Services.Pages;
+using System.Collections.Generic;
 
 namespace WebAPI.Controllers
 {
@@ -55,7 +56,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/pages/add")]
-        public IActionResult Add([FromBody] OnlineAuction.Data.DbEntity.Pages model)
+        public IActionResult Add([FromBody] PageRequestModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -77,7 +78,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/pages/update")]
-        public IActionResult Update([FromBody] OnlineAuction.Data.DbEntity.Pages model)
+        public IActionResult Update([FromBody] PageRequestModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -90,6 +91,50 @@ namespace WebAPI.Controllers
             }
 
             returnModel = _pageService.Update(model);
+
+            if (returnModel.IsSuccess)
+                return Ok(returnModel);
+            else
+                return Conflict(returnModel);
+        }
+
+        [HttpPost]
+        [Route("/pages/isactiveupdate")]
+        public IActionResult PageIsActiveUpdate([FromBody] PageRequestModel model)
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+
+            if (!ModelState.IsValid)
+            {
+                returnModel.IsSuccess = false;
+                returnModel.Message = "Lütfen zorunlu alanları doldurunuz";
+
+                return BadRequest(returnModel);
+            }
+
+            returnModel = _pageService.PageIsActiveUpdate(model);
+
+            if (returnModel.IsSuccess)
+                return Ok(returnModel);
+            else
+                return Conflict(returnModel);
+        }
+
+        [HttpPost]
+        [Route("/pages/rangupdate")]
+        public IActionResult PageRangUpdate([FromBody] PageRequestModel model)
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+
+            if (!ModelState.IsValid)
+            {
+                returnModel.IsSuccess = false;
+                returnModel.Message = "Lütfen zorunlu alanları doldurunuz";
+
+                return BadRequest(returnModel);
+            }
+
+            returnModel = _pageService.PageRangUpdate(model);
 
             if (returnModel.IsSuccess)
                 return Ok(returnModel);
@@ -112,6 +157,20 @@ namespace WebAPI.Controllers
             }
 
             returnModel = _pageService.Delete(id);
+
+            if (returnModel.IsSuccess)
+                return Ok(returnModel);
+            else
+                return Conflict(returnModel);
+        }
+
+        [HttpPost]
+        [Route("/pages/deleteall")]
+        public IActionResult DeleteAllData()
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+
+            returnModel = _pageService.DeleteAllData();
 
             if (returnModel.IsSuccess)
                 return Ok(returnModel);

@@ -8,10 +8,13 @@ namespace OnlineAuction.Services.Pages
 {
     public interface IPageService
     {
-        List<OnlineAuction.Data.DbEntity.Pages> GetPages();
+        List<OnlineAuction.Data.Models.PagesModel> GetPages();
         List<PageSpecifications> GetPageSpecifications();
-        ReturnModel<object> Add(OnlineAuction.Data.DbEntity.Pages model);
-        ReturnModel<object> Update(OnlineAuction.Data.DbEntity.Pages model);
+        ReturnModel<object> Add(PageRequestModel model);
+        ReturnModel<object> Update(PageRequestModel model);
+        ReturnModel<object> PageIsActiveUpdate(PageRequestModel model);
+        ReturnModel<object> PageRangUpdate(PageRequestModel model);
+        ReturnModel<object> DeleteAllData();
         ReturnModel<object> Delete(int id);
         OnlineAuction.Data.DbEntity.Pages GetPageById(int id);
     }

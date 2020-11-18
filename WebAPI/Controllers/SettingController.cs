@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using OnlineAuction.Data.DbEntity;
+using OnlineAuction.Data.Model;
 using OnlineAuction.Data.Models;
 using OnlineAuction.Data.Models.Users;
 using OnlineAuction.Services.FormSettingsService;

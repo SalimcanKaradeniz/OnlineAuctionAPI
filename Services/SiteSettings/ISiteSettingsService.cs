@@ -1,4 +1,5 @@
 ﻿using OnlineAuction.Data.DbEntity;
+using OnlineAuction.Data.Model;
 using OnlineAuction.Data.Models;
 using System;
 using System.Collections.Generic;

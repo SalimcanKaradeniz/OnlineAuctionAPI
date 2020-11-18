@@ -15,6 +15,7 @@ namespace OnlineAuction.Data.DbEntity
         }
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [MaxLength(250)]
         public string TR_EffortName { get; set; }

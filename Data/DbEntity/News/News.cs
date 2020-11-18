@@ -18,17 +18,17 @@ namespace OnlineAuction.Data.DbEntity
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [MaxLength(250)]
-        public string TR_Title { get; set; }
+        public string Title_tr { get; set; }
         [MaxLength(250)]
-        public string EN_Title { get; set; }
+        public string Title_en { get; set; }
         [MaxLength(250)]
-        public string TR_ShortDescription { get; set; }
+        public string ShortDescription_tr { get; set; }
         [MaxLength(250)]
-        public string TR_Detail { get; set; }
+        public string ShortDescription_en { get; set; }
         [MaxLength(250)]
-        public string EN_ShortDescription { get; set; }
+        public string Detail_tr { get; set; }
         [MaxLength(250)]
-        public string EN_Detail { get; set; }
+        public string Detail_en { get; set; }
         [MaxLength]
         public string Picture { get; set; }
         public bool IsActive { get; set; }

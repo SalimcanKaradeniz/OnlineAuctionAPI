@@ -1,7 +1,9 @@
 ﻿using OnlineAuction.Core.UnitOfWork;
 using OnlineAuction.Data.Context;
 using OnlineAuction.Data.DbEntity;
+using OnlineAuction.Data.Model;
 using OnlineAuction.Data.Models;
+using OnlineAuction.Services.Languages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +14,11 @@ namespace OnlineAuction.Services.SiteSettingsService
     public class SiteSettingsService : ISiteSettingsService
     {
         private readonly IUnitOfWork<OnlineAuctionContext> _unitOfWork;
-        public SiteSettingsService(IUnitOfWork<OnlineAuctionContext> unitOfWork)
+        private readonly ILanguagesService _languagesService;
+        public SiteSettingsService(IUnitOfWork<OnlineAuctionContext> unitOfWork, ILanguagesService languagesService)
         {
             _unitOfWork = unitOfWork;
+            _languagesService = languagesService;
         }
 
         public List<SiteSettings> GetSiteSettings()
@@ -58,11 +62,29 @@ namespace OnlineAuction.Services.SiteSettingsService
 
             try
             {
-                var socialMediaSetting = GetSiteSettingsById(model.Id);
+                var siteSetting = GetSiteSettingsById(model.Id);
 
-                if (socialMediaSetting != null)
+                if (siteSetting != null)
                 {
-                    _unitOfWork.GetRepository<SiteSettings>().Update(socialMediaSetting);
+                    siteSetting.Title = model.Title;
+                    siteSetting.Description = model.Description;
+                    siteSetting.CellPhone = model.CellPhone;
+                    siteSetting.LandPhone = model.LandPhone;
+                    siteSetting.Fax = model.Fax;
+                    siteSetting.Email = model.Email;
+                    siteSetting.Address = model.Address;
+                    siteSetting.FacebookUrl = model.FacebookUrl;
+                    siteSetting.InstagramUrl = model.InstagramUrl;
+                    siteSetting.TwitterUrl = model.TwitterUrl;
+                    siteSetting.LinkedinUrl = model.LinkedinUrl;
+                    siteSetting.PinterestUrl = model.PinterestUrl;
+                    siteSetting.OtherSocialMediaUrl = model.OtherSocialMediaUrl;
+                    siteSetting.Map = model.Map;
+                    siteSetting.ComissionRate = model.ComissionRate;
+                    siteSetting.TaxRate = model.TaxRate;
+                    siteSetting.IsActive = model.IsActive;
+
+                    _unitOfWork.GetRepository<SiteSettings>().Update(siteSetting);
 
                     int result = _unitOfWork.SaveChanges();
 
@@ -143,7 +165,7 @@ namespace OnlineAuction.Services.SiteSettingsService
             }
         }
 
-        public SiteSettings GetSiteSettingsById(int id) 
+        public SiteSettings GetSiteSettingsById(int id)
         {
             return _unitOfWork.GetRepository<SiteSettings>().GetFirstOrDefault(predicate: x => x.Id == id);
         }

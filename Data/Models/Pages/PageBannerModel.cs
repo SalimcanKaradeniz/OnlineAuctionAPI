@@ -15,7 +15,7 @@ namespace OnlineAuction.Data.Models
         public DateTime CreatedAt { get; set; }
 
         [ForeignKey("Id")]
-        public PagesModel Page { get; set; }
+        public PageRequestModel Page { get; set; }
     }
 
 }

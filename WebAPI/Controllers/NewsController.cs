@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using OnlineAuction.Data.Model;
 using OnlineAuction.Data.Models;
 using Services.News;
 
@@ -54,7 +55,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/news/add")]
-        public IActionResult Add([FromBody] OnlineAuction.Data.DbEntity.News model)
+        public IActionResult Add([FromBody] NewsRequestModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -76,7 +77,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/news/update")]
-        public IActionResult Update([FromBody] OnlineAuction.Data.DbEntity.News model)
+        public IActionResult Update([FromBody] NewsRequestModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -89,6 +90,28 @@ namespace WebAPI.Controllers
             }
 
             returnModel = _newsService.Update(model);
+
+            if (returnModel.IsSuccess)
+                return Ok(returnModel);
+            else
+                return Conflict(returnModel);
+        }
+
+        [HttpPost]
+        [Route("/news/isactiveupdate")]
+        public IActionResult NewIsActiveUpdate([FromBody] NewsRequestModel model)
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+
+            if (!ModelState.IsValid)
+            {
+                returnModel.IsSuccess = false;
+                returnModel.Message = "Lütfen zorunlu alanları doldurunuz";
+
+                return BadRequest(returnModel);
+            }
+
+            returnModel = _newsService.NewIsActiveUpdate(model);
 
             if (returnModel.IsSuccess)
                 return Ok(returnModel);
@@ -111,6 +134,20 @@ namespace WebAPI.Controllers
             }
 
             returnModel = _newsService.Delete(id);
+
+            if (returnModel.IsSuccess)
+                return Ok(returnModel);
+            else
+                return Conflict(returnModel);
+        }
+
+        [HttpPost]
+        [Route("/news/deleteall")]
+        public IActionResult DeleteAll()
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+
+            returnModel = _newsService.DeleteAll();
 
             if (returnModel.IsSuccess)
                 return Ok(returnModel);

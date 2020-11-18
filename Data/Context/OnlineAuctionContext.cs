@@ -19,6 +19,12 @@ namespace OnlineAuction.Data.Context
 
         #endregion
 
+        #region Sliders
+
+        public DbSet<Sliders> Sliders { get; set; }
+
+        #endregion
+
         #region Efforts
 
         public DbSet<EffortPictures> EffortPictures { get; set; }
@@ -50,6 +56,10 @@ namespace OnlineAuction.Data.Context
         public DbSet<PageBanner> PageBanners { get; set; }
         public DbSet<PageSpecifications> PageSpecifications { get; set; }
 
+        #endregion
+
+        #region Log
+        public DbSet<LogSystem> LogSystems { get; set; }
         #endregion
     }
 }

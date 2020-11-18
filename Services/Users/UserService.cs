@@ -3,14 +3,14 @@ using Microsoft.IdentityModel.Tokens;
 using OnlineAuction.Core.Extensions;
 using OnlineAuction.Core.UnitOfWork;
 using OnlineAuction.Data.Context;
-using OnlineAuction.Data.DbEntity;
 using OnlineAuction.Data.Models;
 using OnlineAuction.Data.Models.Users;
+using OnlineAuction.Services.Log;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 
 namespace OnlineAuction.Services.Users
 {
@@ -18,11 +18,14 @@ namespace OnlineAuction.Services.Users
     {
         private readonly IUnitOfWork<OnlineAuctionContext> _unitOfWork;
         private readonly AppSettings _appSettings;
+        private readonly IServiceProvider _serviceProvider;
         public UserService(IUnitOfWork<OnlineAuctionContext> unitOfWork,
-            IOptions<AppSettings> appSettings)
+            IOptions<AppSettings> appSettings,
+            IServiceProvider serviceProvider)
         {
             _unitOfWork = unitOfWork;
             _appSettings = appSettings.Value;
+            _serviceProvider = serviceProvider;
         }
 
         public ReturnModel<LoginResponseModel> Login(LoginModel model)
@@ -38,10 +41,10 @@ namespace OnlineAuction.Services.Users
                 {
                     returnModel.IsSuccess = false;
                     returnModel.Message = "Kullanıcı bulunamadı";
-                    
+
                     return returnModel;
                 }
-                
+
                 var key = Encoding.ASCII.GetBytes(_appSettings.JwtConfiguration.SigningKey);
                 var singingKey = new SymmetricSecurityKey(key);
 
@@ -65,7 +68,7 @@ namespace OnlineAuction.Services.Users
                 var tokenString = tokenHandler.WriteToken(token);
 
                 #region login response model set
-                
+
                 loginResponseModel.Id = user.Id;
                 loginResponseModel.UserName = user.UserName;
                 loginResponseModel.Email = user.Email;
@@ -88,7 +91,7 @@ namespace OnlineAuction.Services.Users
             }
             catch (Exception ex)
             {
-
+                ex.InsertLog(loginResponseModel.Id, serviceProvider: _serviceProvider);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Giriş işlemi gerçekleştirilemedi";
             }

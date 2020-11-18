@@ -25,6 +25,12 @@ using OnlineAuction.Services.SocialMediaSettingsService;
 using OnlineAuction.Services.Users;
 using OnlineAuction.Services.Pages;
 using Services.News;
+using Services.Artists;
+using OnlineAuction.Services.Sliders;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace WebAPI
 {
@@ -47,6 +53,12 @@ namespace WebAPI
                         "AllowOrigin",
                         builder => builder.WithOrigins("*")
                     );
+            });
+
+            services.Configure<FormOptions>(o => {
+                o.ValueLengthLimit = int.MaxValue;
+                o.MultipartBodyLengthLimit = int.MaxValue;
+                o.MemoryBufferThreshold = int.MaxValue;
             });
 
             AppSettings appSettings = new AppSettings();
@@ -112,6 +124,7 @@ namespace WebAPI
 
             #endregion
 
+            services.AddTransient<IAppContext, OnlineAuction.Data.Models.AppContext>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ILanguagesService, LanguagesService>();
             services.AddTransient<ISiteSettingsService, SiteSettingsService>();
@@ -119,6 +132,11 @@ namespace WebAPI
             services.AddTransient<ISocialMediaSettingsService, SocialMediaSettingsService>();
             services.AddTransient<IPageService, PageService>();
             services.AddTransient<INewsService, NewsService>();
+            services.AddTransient<IArtistService, ArtistService>();
+            services.AddTransient<ISliderService, SliderService>();
+
+            // Htpp Context Accessor
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -135,6 +153,13 @@ namespace WebAPI
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Resources")),
+                RequestPath = new PathString("/Resources")
+            });
 
             app.UseEndpoints(endpoints =>
             {

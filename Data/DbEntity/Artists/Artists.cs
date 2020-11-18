@@ -11,6 +11,7 @@ namespace OnlineAuction.Data.DbEntity
     {
         public Artists()
         {
+            this.CreatedAt = DateTime.Now;
             this.Efforts = new List<Efforts>();
         }
 
@@ -18,17 +19,16 @@ namespace OnlineAuction.Data.DbEntity
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         [MaxLength(250)]
-        public string Name { get; set; }
-        [MaxLength(250)]
-        public string SurName { get; set; }
+        public string NameSurname { get; set; }
         [MaxLength]
-        public string TR_About { get; set; }
+        public string About_tr { get; set; }
         [MaxLength]
-        public string EN_About { get; set; }
+        public string About_en { get; set; }
         [MaxLength]
         public string Picture { get; set; }
-        public bool IsOutHomePage { get; set; }
-        public bool IsAbout { get; set; }
+        public bool IsActive { get; set; }
+        public DateTime? BirthDate { get; set; }
+        public DateTime? DateOfDeath { get; set; }
         public DateTime CreatedAt { get; set; }
 
         public List<Efforts> Efforts { get; set; }

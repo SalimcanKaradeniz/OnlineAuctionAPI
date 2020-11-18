@@ -1,6 +1,7 @@
 ﻿using OnlineAuction.Core.UnitOfWork;
 using OnlineAuction.Data.Context;
 using OnlineAuction.Data.Models;
+using OnlineAuction.Services.Log;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,15 @@ namespace OnlineAuction.Services.Languages
     public class LanguagesService : ILanguagesService
     {
         private readonly IUnitOfWork<OnlineAuctionContext> _unitOfWork;
-        public LanguagesService(IUnitOfWork<OnlineAuctionContext> unitOfWork)
+        private readonly IAppContext _appContext;
+        private readonly IServiceProvider _serviceProvider;
+        public LanguagesService(IUnitOfWork<OnlineAuctionContext> unitOfWork,
+            IAppContext appContext,
+            IServiceProvider serviceProvider)
         {
             _unitOfWork = unitOfWork;
+            _serviceProvider = serviceProvider;
+            _appContext = appContext;
         }
 
         public List<OnlineAuction.Data.DbEntity.Languages> GetLanguages()
@@ -51,6 +58,7 @@ namespace OnlineAuction.Services.Languages
             }
             catch (Exception ex)
             {
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Dil Eklenirken hata oluştu";
                 return returnModel;
@@ -97,6 +105,7 @@ namespace OnlineAuction.Services.Languages
             }
             catch (Exception ex)
             {
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Dil düzenlenirken hata oluştu";
                 return returnModel;
@@ -146,6 +155,7 @@ namespace OnlineAuction.Services.Languages
             }
             catch (Exception ex)
             {
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Dil silinirken hata oluştu";
                 return returnModel;
