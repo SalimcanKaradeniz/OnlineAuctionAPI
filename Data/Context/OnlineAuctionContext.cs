@@ -71,5 +71,9 @@ namespace OnlineAuction.Data.Context
         #region Log
         public DbSet<LogSystem> LogSystems { get; set; }
         #endregion
+
+        #region Words
+        public DbSet<Words> Words { get; set; }
+        #endregion
     }
 }
