@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 using OnlineAuction.Data.DbEntity;
 using OnlineAuction.Data.Models;
 using OnlineAuction.Services.Pages;
-using Services.Artists;
+using OnlineAuction.Services.Artists;
 
 namespace WebAPI.Controllers
 {

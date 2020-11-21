@@ -24,13 +24,15 @@ using OnlineAuction.Services.SiteSettingsService;
 using OnlineAuction.Services.SocialMediaSettingsService;
 using OnlineAuction.Services.Users;
 using OnlineAuction.Services.Pages;
-using Services.News;
-using Services.Artists;
+using OnlineAuction.Services.News;
+using OnlineAuction.Services.Artists;
 using OnlineAuction.Services.Sliders;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.AspNetCore.Http.Features;
+using OnlineAuction.Services.Log;
+using OnlineAuction.Services.Products;
 
 namespace WebAPI
 {
@@ -55,7 +57,8 @@ namespace WebAPI
                     );
             });
 
-            services.Configure<FormOptions>(o => {
+            services.Configure<FormOptions>(o =>
+            {
                 o.ValueLengthLimit = int.MaxValue;
                 o.MultipartBodyLengthLimit = int.MaxValue;
                 o.MemoryBufferThreshold = int.MaxValue;
@@ -134,6 +137,10 @@ namespace WebAPI
             services.AddTransient<INewsService, NewsService>();
             services.AddTransient<IArtistService, ArtistService>();
             services.AddTransient<ISliderService, SliderService>();
+            services.AddTransient<ILogService, LogService>();
+            services.AddTransient<IProductCategoryGroupService, ProductCategoryGroupService>();
+            services.AddTransient<IProductCategoryService, ProductCategoryService>();
+            services.AddTransient<IProductService, ProductService>();
 
             // Htpp Context Accessor
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();

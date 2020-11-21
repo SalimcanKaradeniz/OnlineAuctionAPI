@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Services.News
+namespace OnlineAuction.Services.News
 {
     public class NewsService : INewsService
     {

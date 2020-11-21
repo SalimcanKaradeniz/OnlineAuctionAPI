@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Services.Artists
+namespace OnlineAuction.Services.Artists
 {
     public interface IArtistService
     {

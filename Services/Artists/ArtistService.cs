@@ -5,13 +5,13 @@ using OnlineAuction.Data.Model;
 using OnlineAuction.Data.Models;
 using OnlineAuction.Services.Languages;
 using OnlineAuction.Services.Log;
-using Services.Artists;
+using OnlineAuction.Services.Artists;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Services.News
+namespace OnlineAuction.Services.News
 {
     public class ArtistService : IArtistService
     {

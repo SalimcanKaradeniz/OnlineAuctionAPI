@@ -58,6 +58,7 @@ namespace OnlineAuction.Data.Models
 
         public int Id { get; set; }
         public int ParentId { get; set; }
+        public int? Rank { get; set; }
         [MaxLength(250)]
         public string Title_tr { get; set; }
         [MaxLength(250)]

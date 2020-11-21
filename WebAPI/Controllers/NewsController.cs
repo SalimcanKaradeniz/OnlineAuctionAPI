@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using OnlineAuction.Data.Model;
 using OnlineAuction.Data.Models;
-using Services.News;
+using OnlineAuction.Services.News;
 
 namespace WebAPI.Controllers
 {

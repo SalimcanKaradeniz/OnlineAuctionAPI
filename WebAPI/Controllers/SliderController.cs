@@ -6,12 +6,14 @@ using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using OnlineAuction.Data.DbEntity;
 using OnlineAuction.Data.Models;
+using OnlineAuction.Services.Log;
 using OnlineAuction.Services.Pages;
 using OnlineAuction.Services.Sliders;
 using System;
 using System.IO;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Web;
 
 namespace WebAPI.Controllers
 {
@@ -22,11 +24,20 @@ namespace WebAPI.Controllers
     {
         private readonly AppSettings _appSettings;
         private readonly ISliderService _sliderService;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IAppContext _appContext;
+        private readonly ILogService _logService;
         public SliderController(IOptions<AppSettings> appSettings,
-            ISliderService sliderService)
+            ISliderService sliderService,
+            IServiceProvider serviceProvider,
+            IAppContext appContext,
+            ILogService logService)
         {
             _appSettings = appSettings.Value;
             _sliderService = sliderService;
+            _serviceProvider = serviceProvider;
+            _appContext = appContext;
+            _logService = logService;
         }
 
 
@@ -166,24 +177,35 @@ namespace WebAPI.Controllers
         [Route("/file/fileupload")]
         public IActionResult FileUplod([FromForm] IFormFile file) 
         {
-            var folderName = Path.Combine("Resources", "Images");
-            var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+            try
+            {
+                var folderName = Path.Combine("Resources", "Images");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
 
-            if (file != null && file.Length > 0)
-            {
-                var fullPath = Path.Combine(pathToSave, file.FileName);
-                var dbPath = Path.Combine(folderName, file.FileName);
-                using (var stream = new FileStream(fullPath, FileMode.Create))
+                if (file != null && file.Length > 0)
                 {
-                    file.CopyTo(stream);
+                    string fileName = $"{DateTime.Now.Ticks.ToString()}_{file.FileName.Replace(" ", "_")}";
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    var dbPath = Path.Combine(folderName, fileName).Replace("\\","/");
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+
+                    string filePath = $"{_appSettings.App.Link}{dbPath}";
+                    return Ok(new { filePath });
                 }
-                return Ok(new { dbPath });
+                else
+                {
+                    return BadRequest();
+                }
             }
-            else
+            catch (Exception exception)
             {
+                exception.InsertLog(_appContext.UserId, Request, _serviceProvider);
+
                 return BadRequest();
             }
-
         }
     }
 }

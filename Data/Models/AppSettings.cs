@@ -6,8 +6,14 @@ namespace OnlineAuction.Data.Models
 {
     public class AppSettings
     {
+        public App App { get; set; }
         public ConnectionStrings ConnectionStrings { get; set; }
         public JwtConfiguration JwtConfiguration { get; set; }
+    }
+
+    public class App 
+    {
+        public string Link { get; set; }
     }
 
     public class ConnectionStrings

@@ -24,6 +24,10 @@ namespace WebAPI.Controllers
         }
 
 
+        #region Pages
+
+        #region Get
+
         [HttpGet]
         [Route("/pages")]
         public IActionResult GetPages()
@@ -54,6 +58,10 @@ namespace WebAPI.Controllers
             return Ok(_pageService.GetPageSpecifications());
         }
 
+        #endregion
+
+        #region Add
+
         [HttpPost]
         [Route("/pages/add")]
         public IActionResult Add([FromBody] PageRequestModel model)
@@ -75,6 +83,10 @@ namespace WebAPI.Controllers
             else
                 return Conflict(returnModel);
         }
+
+        #endregion
+
+        #region Update
 
         [HttpPost]
         [Route("/pages/update")]
@@ -99,8 +111,8 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("/pages/isactiveupdate")]
-        public IActionResult PageIsActiveUpdate([FromBody] PageRequestModel model)
+        [Route("/pages/ismainupdate")]
+        public IActionResult PageIsMainUpdate([FromBody] PageRequestModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -112,7 +124,7 @@ namespace WebAPI.Controllers
                 return BadRequest(returnModel);
             }
 
-            returnModel = _pageService.PageIsActiveUpdate(model);
+            returnModel = _pageService.PageIsMainUpdate(model);
 
             if (returnModel.IsSuccess)
                 return Ok(returnModel);
@@ -141,6 +153,10 @@ namespace WebAPI.Controllers
             else
                 return Conflict(returnModel);
         }
+
+        #endregion
+
+        #region Delete
 
         [HttpPost]
         [Route("/pages/delete/{id}")]
@@ -177,5 +193,73 @@ namespace WebAPI.Controllers
             else
                 return Conflict(returnModel);
         }
+
+        #endregion
+
+        #endregion
+
+        #region Gallery
+
+        [HttpGet]
+        [Route("/subgallerypages/{id}")]
+        public IActionResult GetGalleryPagesById([FromRoute]int id)
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+
+            if (id <= 0)
+            {
+                returnModel.IsSuccess = false;
+                returnModel.Message = "Galeri Sayfası bulunamadı";
+                return BadRequest(returnModel);
+            }
+
+            return Ok(_pageService.GetGalleryPagesById(id));
+        }
+
+        [HttpPost]
+        [Route("/subgallerypages/add")]
+        public IActionResult GalleryAdd([FromBody] PageRequestModel model)
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+
+            if (!ModelState.IsValid)
+            {
+                returnModel.IsSuccess = false;
+                returnModel.Message = "Lütfen zorunlu alanları doldurunuz";
+
+                return BadRequest(returnModel);
+            }
+
+            returnModel = _pageService.GalleryAdd(model);
+
+            if (returnModel.IsSuccess)
+                return Ok(returnModel);
+            else
+                return Conflict(returnModel);
+        }
+
+        [HttpPost]
+        [Route("/subgallerypages/update")]
+        public IActionResult GalleryUpdate([FromBody] PageRequestModel model)
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+
+            if (!ModelState.IsValid)
+            {
+                returnModel.IsSuccess = false;
+                returnModel.Message = "Lütfen zorunlu alanları doldurunuz";
+
+                return BadRequest(returnModel);
+            }
+
+            returnModel = _pageService.GalleryUpdate(model);
+
+            if (returnModel.IsSuccess)
+                return Ok(returnModel);
+            else
+                return Conflict(returnModel);
+        }
+
+        #endregion
     }
 }

@@ -14,6 +14,16 @@ namespace OnlineAuction.Data.Context
         public DbSet<Users> Users { get; set; }
         #endregion
 
+        #region Products
+        
+        public DbSet<Products> Products { get; set; }
+        public DbSet<ProductCategory> ProductCategories { get; set; }
+        public DbSet<ProductCategoryGroup> ProductCategoryGroups { get; set; }
+        public DbSet<ProductTypes> ProductTypes { get; set; }
+        public DbSet<ProductPictures> ProductPictures { get; set; }
+        
+        #endregion
+
         #region Artists
         public DbSet<Artists> Artists { get; set; }
 
