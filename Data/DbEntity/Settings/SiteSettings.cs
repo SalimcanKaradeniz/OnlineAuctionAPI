@@ -45,6 +45,7 @@ namespace OnlineAuction.Data.DbEntity
         public string OtherSocialMediaUrl { get; set; }
         [MaxLength]
         public string Map { get; set; }
+        public string Logo { get; set; }
         public decimal? ComissionRate { get; set; }
         public int? TaxRate { get; set; }
         public bool IsActive { get; set; }

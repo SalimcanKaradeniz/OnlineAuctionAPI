@@ -1,4 +1,5 @@
-﻿using OnlineAuction.Data.DbEntity;
+﻿using Microsoft.AspNetCore.Http;
+using OnlineAuction.Data.DbEntity;
 using OnlineAuction.Data.Model;
 using OnlineAuction.Data.Models;
 using System;
@@ -11,7 +12,7 @@ namespace OnlineAuction.Services.SiteSettingsService
     {
         public List<SiteSettings> GetSiteSettings();
         ReturnModel<object> Add(SiteSettings model);
-        ReturnModel<object> Update(SiteSettings model);
+        ReturnModel<object> Update(SiteSettings model, IFormFile logo);
         ReturnModel<object> Delete(int id);
         SiteSettings GetSiteSettingsById(int id);
     }

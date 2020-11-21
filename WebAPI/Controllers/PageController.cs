@@ -260,6 +260,26 @@ namespace WebAPI.Controllers
                 return Conflict(returnModel);
         }
 
+        [HttpPost]
+        [Route("/subgallerypages/deleteall/{id}")]
+        public IActionResult DeleteAllData([FromRoute] int id)
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+
+            if (id <= 0)
+            {
+                returnModel.IsSuccess = false;
+                returnModel.Message = "Galeri Sayfası Bulunamadı";
+                return BadRequest(returnModel);
+            }
+
+            returnModel = _pageService.DeleteAllData();
+
+            if (returnModel.IsSuccess)
+                return Ok(returnModel);
+            else
+                return Conflict(returnModel);
+        }
         #endregion
     }
 }

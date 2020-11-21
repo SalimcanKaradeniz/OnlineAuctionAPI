@@ -724,6 +724,55 @@ namespace OnlineAuction.Services.Pages
             }
         }
 
+        public ReturnModel<object> GalleryAllData(int id)
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+
+            if (id <= 0)
+            {
+                returnModel.IsSuccess = false;
+                returnModel.Message = "Galeri sayfası bulunamadı";
+                return returnModel;
+            }
+
+            try
+            {
+                var pages = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Pages>().GetAll(x => x.ParentId == id && x.SpecificationId ==(int)PageType.Gallery, include: source => source.Include(b => b.PageBanners));
+
+                if (pages.Any())
+                {
+                    _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Pages>().Delete(pages);
+                    int result = _unitOfWork.SaveChanges();
+
+                    if (result > 0)
+                    {
+                        returnModel.IsSuccess = true;
+                        returnModel.Message = "Galeri Sayfalar Silindi";
+                        return returnModel;
+                    }
+                    else
+                    {
+                        returnModel.IsSuccess = false;
+                        returnModel.Message = "Galeri Sayfalar Silinemedi";
+                        return returnModel;
+                    }
+                }
+                else
+                {
+                    returnModel.IsSuccess = false;
+                    returnModel.Message = "Galeri Sayfalar Bulunamadı";
+                    return returnModel;
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                returnModel.IsSuccess = false;
+                returnModel.Message = " Galeri Sayfa Silinirken Bir Hata Oluştu";
+                return returnModel;
+            }
+        }
+
         #endregion
     }
 }

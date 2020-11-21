@@ -4,8 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using OnlineAuction.Data.DbEntity;
 using OnlineAuction.Data.Model;
 using OnlineAuction.Data.Models;
@@ -74,9 +76,14 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/sitesettings/update")]
-        public IActionResult SiteSettingsUpdate([FromBody] SiteSettings model)
+        public IActionResult SiteSettingsUpdate([FromForm] IFormFile logo)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
+            SiteSettings model = JsonConvert.DeserializeObject<SiteSettings>(Request.Form["data"]);
+            
+            string existLogo = Request.Form["logo"];
+            
+            model.Logo = existLogo;
 
             if (!ModelState.IsValid)
             {
@@ -86,7 +93,7 @@ namespace WebAPI.Controllers
                 return BadRequest(returnModel);
             }
 
-            returnModel = _siteSettingsService.Update(model);
+            returnModel = _siteSettingsService.Update(model, logo);
 
             if (returnModel.IsSuccess)
                 return Ok(returnModel);
@@ -281,7 +288,7 @@ namespace WebAPI.Controllers
 
         [HttpGet]
         [Route("/languages")]
-        public IActionResult GetLanguages() 
+        public IActionResult GetLanguages()
         {
             return Ok(_languageService.GetLanguages());
         }
@@ -295,7 +302,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/languages/add")]
-        public IActionResult LanguagesAdd([FromBody] OnlineAuction.Data.DbEntity.Languages model) 
+        public IActionResult LanguagesAdd([FromBody] OnlineAuction.Data.DbEntity.Languages model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 

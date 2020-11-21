@@ -37,6 +37,7 @@ namespace OnlineAuction.Services.Pages
 
         ReturnModel<object> DeleteAllData();
         ReturnModel<object> Delete(int id);
+        ReturnModel<object> GalleryAllData(int id);
 
         #endregion
     }

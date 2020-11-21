@@ -1,11 +1,15 @@
-﻿using OnlineAuction.Core.UnitOfWork;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using OnlineAuction.Core.UnitOfWork;
 using OnlineAuction.Data.Context;
 using OnlineAuction.Data.DbEntity;
 using OnlineAuction.Data.Model;
 using OnlineAuction.Data.Models;
 using OnlineAuction.Services.Languages;
+using OnlineAuction.Services.Log;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -15,10 +19,16 @@ namespace OnlineAuction.Services.SiteSettingsService
     {
         private readonly IUnitOfWork<OnlineAuctionContext> _unitOfWork;
         private readonly ILanguagesService _languagesService;
-        public SiteSettingsService(IUnitOfWork<OnlineAuctionContext> unitOfWork, ILanguagesService languagesService)
+        private readonly IServiceProvider _serviceProvider;
+        private readonly IAppContext _appContext;
+        private readonly AppSettings _appSettings;
+        public SiteSettingsService(IUnitOfWork<OnlineAuctionContext> unitOfWork, ILanguagesService languagesService, IServiceProvider serviceProvider, IAppContext appContext, IOptions<AppSettings> appSettings)
         {
             _unitOfWork = unitOfWork;
             _languagesService = languagesService;
+            _serviceProvider = serviceProvider;
+            _appContext = appContext;
+            _appSettings = appSettings.Value;
         }
 
         public List<SiteSettings> GetSiteSettings()
@@ -56,7 +66,7 @@ namespace OnlineAuction.Services.SiteSettingsService
             }
         }
 
-        public ReturnModel<object> Update(SiteSettings model)
+        public ReturnModel<object> Update(SiteSettings model, IFormFile logo)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -83,6 +93,16 @@ namespace OnlineAuction.Services.SiteSettingsService
                     siteSetting.ComissionRate = model.ComissionRate;
                     siteSetting.TaxRate = model.TaxRate;
                     siteSetting.IsActive = model.IsActive;
+
+                    if (!string.IsNullOrEmpty(model.Logo))
+                    {
+                        siteSetting.Logo = model.Logo;
+                    }
+                    else
+                    {
+                        if (logo != null)
+                            siteSetting.Logo = FileUplod(logo);
+                    }
 
                     _unitOfWork.GetRepository<SiteSettings>().Update(siteSetting);
 
@@ -168,6 +188,39 @@ namespace OnlineAuction.Services.SiteSettingsService
         public SiteSettings GetSiteSettingsById(int id)
         {
             return _unitOfWork.GetRepository<SiteSettings>().GetFirstOrDefault(predicate: x => x.Id == id);
+        }
+
+        public string FileUplod(IFormFile file)
+        {
+            try
+            {
+                var folderName = Path.Combine("Resources", "Images");
+                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
+
+                if (file != null && file.Length > 0)
+                {
+                    string fileName = $"{DateTime.Now.Ticks.ToString()}_{file.FileName.Replace(" ", "_")}";
+                    var fullPath = Path.Combine(pathToSave, fileName);
+                    var dbPath = Path.Combine(folderName, fileName).Replace("\\", "/");
+                    using (var stream = new FileStream(fullPath, FileMode.Create))
+                    {
+                        file.CopyTo(stream);
+                    }
+
+                    string filePath = $"{_appSettings.App.Link}{dbPath}";
+                    return filePath;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception exception)
+            {
+                exception.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+
+                return null;
+            }
         }
     }
 }
