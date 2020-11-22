@@ -75,5 +75,9 @@ namespace OnlineAuction.Data.Context
         #region Words
         public DbSet<Words> Words { get; set; }
         #endregion
+
+        #region Popups
+        public DbSet<Popups> Popups { get; set; }
+        #endregion
     }
 }

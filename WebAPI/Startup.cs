@@ -34,6 +34,7 @@ using Microsoft.AspNetCore.Http.Features;
 using OnlineAuction.Services.Log;
 using OnlineAuction.Services.Products;
 using OnlineAuction.Services.Words;
+using OnlineAuction.Services.Popups;
 
 namespace WebAPI
 {
@@ -143,6 +144,7 @@ namespace WebAPI
             services.AddTransient<IProductCategoryService, ProductCategoryService>();
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IWordsService, WordsService>();
+            services.AddTransient<IPopupsService, PopupsService>();
 
             // Htpp Context Accessor
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();

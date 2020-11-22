@@ -22,6 +22,14 @@ namespace OnlineAuction.Services.Words
             return _unitOfWork.GetRepository<Data.DbEntity.Words>().GetAll().ToList();
         }
 
+        public Data.DbEntity.Words GetWordsById(int id)
+        {
+            if (id <= 0)
+                return new Data.DbEntity.Words();
+
+            return _unitOfWork.GetRepository<Data.DbEntity.Words>().GetFirstOrDefault(predicate: x => x.Id == id);
+        }
+
         public ReturnModel<object> Add(WordsRequestModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
@@ -29,7 +37,7 @@ namespace OnlineAuction.Services.Words
 
             try
             {
-                words.Sef = model.Words.Sef;
+                words.Sef = ReplaceTurkishCharecter(model.Words.Value_tr).Replace(",", "-").Replace(".", "-").Replace(" ","-");
                 words.Value_tr = model.Words.Value_tr;
                 words.Value_en = model.Words.Value_en;
 
@@ -113,11 +121,11 @@ namespace OnlineAuction.Services.Words
 
             try
             {
-                var page = _unitOfWork.GetRepository<Data.DbEntity.Words>().GetFirstOrDefault(predicate: x => x.Id == id);
+                var word = _unitOfWork.GetRepository<Data.DbEntity.Words>().GetFirstOrDefault(predicate: x => x.Id == id);
 
-                if (page != null)
+                if (word != null)
                 {
-                    _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Words>().Delete(page);
+                    _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Words>().Delete(word);
                     int result = _unitOfWork.SaveChanges();
 
                     if (result > 0)
@@ -146,6 +154,68 @@ namespace OnlineAuction.Services.Words
                 returnModel.Message = "Kelime Silinirken Bir Hata Oluştu";
                 return returnModel;
             }
+        }
+
+        public ReturnModel<object> DeleteAll()
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+
+            try
+            {
+                var words = _unitOfWork.GetRepository<Data.DbEntity.Words>().GetAll().ToList();
+
+                if (words != null)
+                {
+                    _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Words>().Delete(words);
+                    int result = _unitOfWork.SaveChanges();
+
+                    if (result > 0)
+                    {
+                        returnModel.IsSuccess = true;
+                        returnModel.Message = "Kelime Silindi";
+                        return returnModel;
+                    }
+                    else
+                    {
+                        returnModel.IsSuccess = false;
+                        returnModel.Message = "Kelime Silinemedi";
+                        return returnModel;
+                    }
+                }
+                else
+                {
+                    returnModel.IsSuccess = false;
+                    returnModel.Message = "Kelime Bulunamadı";
+                    return returnModel;
+                }
+            }
+            catch (Exception ex)
+            {
+                returnModel.IsSuccess = false;
+                returnModel.Message = "Kelime Silinirken Bir Hata Oluştu";
+                return returnModel;
+            }
+        }
+
+        private string ReplaceTurkishCharecter(string data)
+        {
+
+            data = data.Replace("ü", "u"); 
+            data = data.Replace("ı", "i");
+            data = data.Replace("ö", "o");
+            data = data.Replace("ü", "u");
+            data = data.Replace("ş", "s");
+            data = data.Replace("ğ", "g");
+            data = data.Replace("ç", "c");
+            data = data.Replace("Ü", "U");
+            data = data.Replace("İ", "I");
+            data = data.Replace("Ö", "O");
+            data = data.Replace("Ü", "U");
+            data = data.Replace("Ş", "S");
+            data = data.Replace("Ğ", "G");
+            data = data.Replace("Ç", "C");
+
+            return data;
         }
     }
 }

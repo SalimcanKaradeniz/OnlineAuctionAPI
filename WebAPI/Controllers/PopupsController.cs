@@ -1,85 +1,63 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using OnlineAuction.Data.DbEntity;
 using OnlineAuction.Data.Models;
-using OnlineAuction.Data.Models.Users;
-using OnlineAuction.Services.Users;
+using OnlineAuction.Services.Log;
+using OnlineAuction.Services.Popups;
+using System;
 
 namespace WebAPI.Controllers
 {
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
-    public class UserController : Controller
+    public class PopupsController : Controller
     {
-        private readonly AppSettings _appSettings;
-        private readonly IUserService _userService;
-        public UserController(IOptions<AppSettings> appSettings,
-            IUserService userService)
+        private readonly IPopupsService _popupsService;
+        public PopupsController(IOptions<AppSettings> appSettings,
+            IPopupsService popupsService,
+            IServiceProvider serviceProvider,
+            IAppContext appContext,
+            ILogService logService)
         {
-            _appSettings = appSettings.Value;
-            _userService = userService;
+            _popupsService = popupsService;
         }
 
-        [AllowAnonymous]
-        [HttpPost]
-        [Route("/login")]
-        public IActionResult Login([FromBody] LoginModel model)
+
+        [HttpGet]
+        [Route("/popups")]
+        public IActionResult Getpopups()
         {
-            ReturnModel<LoginResponseModel> returnModel = new ReturnModel<LoginResponseModel>();
-
-            if (ModelState.IsValid)
-            {
-                var userLogin = _userService.Login(model);
-
-                if (!userLogin.IsSuccess)
-                    return Unauthorized(returnModel);
-
-                returnModel.IsSuccess = true;
-                returnModel.Data = userLogin.Data;
-
-                return Ok(returnModel);
-            }
-            else
-            {
-                returnModel.IsSuccess = false;
-                returnModel.Message = "Model doğrulanamadı";
-
-                return BadRequest();
-            }
+            return Ok(_popupsService.GetPopups());
         }
 
         [HttpGet]
-        [Route("/users")]
-        public IActionResult GetUsers()
-        {
-            return Ok(_userService.GetUsers());
-        }
-
-        [HttpGet]
-        [Route("/users/{id}")]
-        public IActionResult GetUserById([FromRoute]int id)
+        [Route("/popups/{id}")]
+        public IActionResult GetPopupById([FromRoute]int id)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
             if (id <= 0)
             {
                 returnModel.IsSuccess = false;
-                returnModel.Message = "Kullanıcı bulunamadı";
+                returnModel.Message = "Popup bulunamadı";
                 return BadRequest(returnModel);
             }
 
-            return Ok(_userService.GetUserById(id));
+            return Ok(_popupsService.GetPopupById(id));
         }
 
+        [HttpGet]
+        [Route("/activepopups")]
+        public IActionResult GetActivePopups()
+        {
+            return Ok(_popupsService.GetActivePopups());
+        }
 
         [HttpPost]
-        [Route("/users/add")]
-        public IActionResult Add([FromBody] Users model)
+        [Route("/popups/add")]
+        public IActionResult Add([FromBody] PopupsRequestModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -91,7 +69,7 @@ namespace WebAPI.Controllers
                 return BadRequest(returnModel);
             }
 
-            returnModel = _userService.Add(model);
+            returnModel = _popupsService.Add(model);
 
             if (returnModel.IsSuccess)
                 return Ok(returnModel);
@@ -100,8 +78,8 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("/users/update")]
-        public IActionResult Update([FromBody] Users model)
+        [Route("/popups/update")]
+        public IActionResult Update([FromBody] PopupsRequestModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -113,7 +91,7 @@ namespace WebAPI.Controllers
                 return BadRequest(returnModel);
             }
 
-            returnModel = _userService.Update(model);
+            returnModel = _popupsService.Update(model);
 
             if (returnModel.IsSuccess)
                 return Ok(returnModel);
@@ -122,8 +100,8 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("/users/isactiveupdate")]
-        public IActionResult UserIsActiveUpdate([FromBody] Users model)
+        [Route("/popups/isactiveupdate")]
+        public IActionResult PopupIsActiveUpdate([FromBody] PopupsRequestModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -135,16 +113,16 @@ namespace WebAPI.Controllers
                 return BadRequest(returnModel);
             }
 
-            returnModel = _userService.UserIsActiveUpdate(model);
+            returnModel = _popupsService.PopupIsActiveUpdate(model);
 
             if (returnModel.IsSuccess)
                 return Ok(returnModel);
             else
                 return Conflict(returnModel);
         }
-
+        
         [HttpPost]
-        [Route("/users/delete/{id}")]
+        [Route("/popups/delete/{id}")]
         public IActionResult Delete([FromRoute] int id)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
@@ -152,12 +130,12 @@ namespace WebAPI.Controllers
             if (id <= 0)
             {
                 returnModel.IsSuccess = false;
-                returnModel.Message = "Kullanıcı bulunamadı";
+                returnModel.Message = "Sanatçı bulunamadı";
 
                 return BadRequest(returnModel);
             }
 
-            returnModel = _userService.Delete(id);
+            returnModel = _popupsService.Delete(id);
 
             if (returnModel.IsSuccess)
                 return Ok(returnModel);
@@ -166,12 +144,12 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("/users/deleteall")]
+        [Route("/popups/deleteall")]
         public IActionResult DeleteAll()
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
-            returnModel = _userService.DeleteAll();
+            returnModel = _popupsService.DeleteAll();
 
             if (returnModel.IsSuccess)
                 return Ok(returnModel);

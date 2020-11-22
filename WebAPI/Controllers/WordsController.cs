@@ -37,6 +37,16 @@ namespace WebAPI.Controllers
             return Ok(_wordsService.GetWords());
         }
 
+        [HttpGet]
+        [Route("/words/{id}")]
+        public IActionResult GetWords([FromRoute] int id)
+        {
+            if (id <= 0)
+                return Ok(new OnlineAuction.Data.DbEntity.Words());
+
+            return Ok(_wordsService.GetWordsById(id));
+        }
+
         #endregion
 
         #region Add
@@ -108,6 +118,20 @@ namespace WebAPI.Controllers
             }
 
             returnModel = _wordsService.Delete(id);
+
+            if (returnModel.IsSuccess)
+                return Ok(returnModel);
+            else
+                return Conflict(returnModel);
+        }
+
+        [HttpPost]
+        [Route("/words/deleteall")]
+        public IActionResult DeleteAll()
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+
+            returnModel = _wordsService.DeleteAll();
 
             if (returnModel.IsSuccess)
                 return Ok(returnModel);
