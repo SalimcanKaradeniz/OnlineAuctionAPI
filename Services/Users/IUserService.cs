@@ -11,8 +11,8 @@ namespace OnlineAuction.Services.Users
         ReturnModel<LoginResponseModel> Login(LoginModel model);
         List<OnlineAuction.Data.DbEntity.Users> GetUsers();
         OnlineAuction.Data.DbEntity.Users GetUserById(int id);
-        ReturnModel<object> Add(Data.DbEntity.Users model);
-        ReturnModel<object> Update(Data.DbEntity.Users model);
+        ReturnModel<object> Add(UserRequestModel model);
+        ReturnModel<object> Update(UserRequestModel model);
         ReturnModel<object> UserIsActiveUpdate(OnlineAuction.Data.DbEntity.Users model);
         ReturnModel<object> Delete(int id);
         ReturnModel<object> DeleteAll();

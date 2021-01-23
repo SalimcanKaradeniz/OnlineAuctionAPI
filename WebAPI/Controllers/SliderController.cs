@@ -1,19 +1,14 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Core.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
-using OnlineAuction.Data.DbEntity;
+using OnlineAuction.Core.Models;
 using OnlineAuction.Data.Models;
-using OnlineAuction.Services.Log;
-using OnlineAuction.Services.Pages;
 using OnlineAuction.Services.Sliders;
 using System;
 using System.IO;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Web;
 
 namespace WebAPI.Controllers
 {
@@ -26,20 +21,16 @@ namespace WebAPI.Controllers
         private readonly ISliderService _sliderService;
         private readonly IServiceProvider _serviceProvider;
         private readonly IAppContext _appContext;
-        private readonly ILogService _logService;
         public SliderController(IOptions<AppSettings> appSettings,
             ISliderService sliderService,
             IServiceProvider serviceProvider,
-            IAppContext appContext,
-            ILogService logService)
+            IAppContext appContext)
         {
             _appSettings = appSettings.Value;
             _sliderService = sliderService;
             _serviceProvider = serviceProvider;
             _appContext = appContext;
-            _logService = logService;
         }
-
 
         [HttpGet]
         [Route("/sliders")]
@@ -202,7 +193,7 @@ namespace WebAPI.Controllers
             }
             catch (Exception exception)
             {
-                exception.InsertLog(_appContext.UserId, Request, _serviceProvider);
+                exception.InsertLog(_appContext.UserId, Request, _serviceProvider,_appSettings: _appSettings);
 
                 return BadRequest();
             }

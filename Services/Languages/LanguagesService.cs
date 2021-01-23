@@ -1,12 +1,12 @@
-﻿using OnlineAuction.Core.UnitOfWork;
+﻿using Core.Extensions;
+using Microsoft.Extensions.Options;
+using OnlineAuction.Core.Models;
+using OnlineAuction.Core.UnitOfWork;
 using OnlineAuction.Data.Context;
 using OnlineAuction.Data.Models;
-using OnlineAuction.Services.Log;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 
 namespace OnlineAuction.Services.Languages
 {
@@ -15,13 +15,17 @@ namespace OnlineAuction.Services.Languages
         private readonly IUnitOfWork<OnlineAuctionContext> _unitOfWork;
         private readonly IAppContext _appContext;
         private readonly IServiceProvider _serviceProvider;
+        private readonly AppSettings _appSettings;
+
         public LanguagesService(IUnitOfWork<OnlineAuctionContext> unitOfWork,
             IAppContext appContext,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvider,
+            IOptions<AppSettings> appSettings)
         {
             _unitOfWork = unitOfWork;
             _serviceProvider = serviceProvider;
             _appContext = appContext;
+            _appSettings = appSettings.Value;
         }
 
         public List<OnlineAuction.Data.DbEntity.Languages> GetLanguages()
@@ -58,7 +62,7 @@ namespace OnlineAuction.Services.Languages
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Dil Eklenirken hata oluştu";
                 return returnModel;
@@ -105,7 +109,7 @@ namespace OnlineAuction.Services.Languages
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Dil düzenlenirken hata oluştu";
                 return returnModel;
@@ -155,7 +159,7 @@ namespace OnlineAuction.Services.Languages
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Dil silinirken hata oluştu";
                 return returnModel;

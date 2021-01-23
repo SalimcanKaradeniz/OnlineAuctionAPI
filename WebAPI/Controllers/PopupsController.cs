@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using OnlineAuction.Data.Models;
-using OnlineAuction.Services.Log;
 using OnlineAuction.Services.Popups;
-using System;
 
 namespace WebAPI.Controllers
 {
@@ -15,15 +12,10 @@ namespace WebAPI.Controllers
     public class PopupsController : Controller
     {
         private readonly IPopupsService _popupsService;
-        public PopupsController(IOptions<AppSettings> appSettings,
-            IPopupsService popupsService,
-            IServiceProvider serviceProvider,
-            IAppContext appContext,
-            ILogService logService)
+        public PopupsController(IPopupsService popupsService)
         {
             _popupsService = popupsService;
         }
-
 
         [HttpGet]
         [Route("/popups")]

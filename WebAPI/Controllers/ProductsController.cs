@@ -1,20 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using Microsoft.VisualStudio.Web.CodeGeneration.Contracts.Messaging;
 using OnlineAuction.Data.DbEntity;
 using OnlineAuction.Data.Models;
-using OnlineAuction.Services.Log;
-using OnlineAuction.Services.Pages;
 using OnlineAuction.Services.Products;
-using OnlineAuction.Services.Sliders;
-using System;
-using System.IO;
-using System.Net.Http.Headers;
-using System.Text;
-using System.Web;
+using System.Collections.Generic;
 
 namespace WebAPI.Controllers
 {
@@ -23,25 +13,11 @@ namespace WebAPI.Controllers
     [Route("api/[controller]")]
     public class ProductsController : Controller
     {
-        private readonly AppSettings _appSettings;
-        private readonly ISliderService _sliderService;
-        private readonly IServiceProvider _serviceProvider;
-        private readonly IAppContext _appContext;
         private readonly IProductCategoryGroupService _productCategoryGroupService;
         private readonly IProductCategoryService _productCategoryService;
         private readonly IProductService _productService;
-        public ProductsController(IOptions<AppSettings> appSettings,
-            ISliderService sliderService,
-            IServiceProvider serviceProvider,
-            IAppContext appContext,
-            IProductCategoryGroupService productCategoryGroupService,
-            IProductCategoryService productCategoryService,
-        IProductService productService)
+        public ProductsController(IProductCategoryGroupService productCategoryGroupService, IProductCategoryService productCategoryService, IProductService productService)
         {
-            _appSettings = appSettings.Value;
-            _sliderService = sliderService;
-            _serviceProvider = serviceProvider;
-            _appContext = appContext;
             _productService = productService;
             _productCategoryService = productCategoryService;
             _productCategoryGroupService = productCategoryGroupService;
@@ -210,6 +186,28 @@ namespace WebAPI.Controllers
                 return Conflict(returnModel);
         }
 
+        [HttpPost]
+        [Route("/productcategory/isactiveupdate")]
+        public IActionResult CategoryIsActiveUpdate([FromBody] ProductCategoryRequestModel model)
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+
+            if (!ModelState.IsValid)
+            {
+                returnModel.IsSuccess = false;
+                returnModel.Message = "Lütfen zorunlu alanları doldurunuz";
+
+                return BadRequest(returnModel);
+            }
+
+            returnModel = _productCategoryService.CategoryIsActiveUpdate(model);
+
+            if (returnModel.IsSuccess)
+                return Ok(returnModel);
+            else
+                return Conflict(returnModel);
+        }
+
 
         [HttpPost]
         [Route("/productcategory/delete/{id}")]
@@ -327,6 +325,15 @@ namespace WebAPI.Controllers
                 return Conflict(returnModel);
         }
 
+        #endregion
+
+        #region Product Types
+        [HttpGet]
+        [Route("/producttypes")]
+        public IActionResult GetProductTypes() 
+        {
+            return Ok(_productService.GetProductTypes());
+        }
         #endregion
     }
 }

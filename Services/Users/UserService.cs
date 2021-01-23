@@ -5,15 +5,14 @@ using OnlineAuction.Core.UnitOfWork;
 using OnlineAuction.Data.Context;
 using OnlineAuction.Data.Models;
 using OnlineAuction.Data.Models.Users;
-using OnlineAuction.Services.Log;
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Microsoft.AspNetCore.Http;
-using OnlineAuction.Data.DbEntity;
 using System.Collections.Generic;
 using System.Linq;
+using OnlineAuction.Core.Models;
+using Core.Extensions;
 
 namespace OnlineAuction.Services.Users
 {
@@ -118,14 +117,14 @@ namespace OnlineAuction.Services.Users
             return _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Users>().GetFirstOrDefault(predicate: x=> x.Id == id);
         }
 
-        public ReturnModel<object> Add(Data.DbEntity.Users model)
+        public ReturnModel<object> Add(UserRequestModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
             try
             {
-                model.Password = model.Password.ToSHAHash();
-                _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Users>().Insert(model);
+                model.User.Password = model.User.Password.ToSHAHash();
+                _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Users>().Insert(model.User.MapTo<OnlineAuction.Data.DbEntity.Users>());
 
                 var result = _unitOfWork.SaveChanges();
                 if (result > 0)
@@ -144,36 +143,35 @@ namespace OnlineAuction.Services.Users
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Kullanıcı ekleme işlemi gerçekleştirilemedi";
             }
             return returnModel;
         }
 
-        public ReturnModel<object> Update(Data.DbEntity.Users model)
+        public ReturnModel<object> Update(UserRequestModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
             try
             {
-                var user = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Users>().GetFirstOrDefault(predicate: x => x.Id == model.Id);
+                var user = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Users>().GetFirstOrDefault(predicate: x => x.Id == model.User.Id);
 
                 if (user != null)
                 {
-                    user.UserName = model.UserName;
-                    user.Password = model.Password.ToSHAHash();
-                    user.Email = model.Email;
-                    user.FirstName = model.FirstName;
-                    user.LastName = model.LastName;
-                    user.LandPhone = model.LandPhone;
-                    user.IdentityNumber = model.IdentityNumber;
-                    user.CellPhone = model.CellPhone;
-                    user.CityName = model.CityName;
-                    user.DistrictName = model.DistrictName;
-                    user.Address = model.Address;
-                    user.IsActive = model.IsActive;
-                    user.MemberType = model.MemberType;
+                    user.UserName = model.User.UserName;
+                    user.Email = model.User.Email;
+                    user.FirstName = model.User.FirstName;
+                    user.LastName = model.User.LastName;
+                    user.LandPhone = model.User.LandPhone;
+                    user.IdentityNumber = model.User.IdentityNumber;
+                    user.CellPhone = model.User.CellPhone;
+                    user.CityName = model.User.CityName;
+                    user.DistrictName = model.User.DistrictName;
+                    user.Address = model.User.Address;
+                    user.IsActive = model.User.IsActive;
+                    user.MemberType = model.User.MemberType;
 
                     _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Users>().Update(user);
 
@@ -197,7 +195,7 @@ namespace OnlineAuction.Services.Users
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Kullanıcı düzenleme işlemi gerçekleştirilemedi";
             }
@@ -237,7 +235,7 @@ namespace OnlineAuction.Services.Users
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Kullanıcı eklenirken hata oluştu";
             }
@@ -279,7 +277,7 @@ namespace OnlineAuction.Services.Users
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Kullanıcı silinirken hata oluştu";
                 return returnModel;
@@ -311,7 +309,7 @@ namespace OnlineAuction.Services.Users
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Kullanıcı silinirken hata oluştu";
                 return returnModel;

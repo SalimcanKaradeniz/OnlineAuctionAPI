@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
-using System.Security.Claims;
-using System.Text;
 
-namespace OnlineAuction.Data.Models
+namespace OnlineAuction.Core.Models
 {
     public interface IAppContext
     {

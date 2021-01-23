@@ -1,28 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using OnlineAuction.Data.DbEntity;
 using OnlineAuction.Data.Models;
-using OnlineAuction.Data.Models.Users;
-using OnlineAuction.Services.Users;
 using OnlineAuction.Services.Words;
 
 namespace WebAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class WordsController : Controller
     {
-        private readonly AppSettings _appSettings;
         private readonly IWordsService _wordsService;
-        public WordsController(IOptions<AppSettings> appSettings,
-            IWordsService wordsService)
+        public WordsController(IWordsService wordsService)
         {
-            _appSettings = appSettings.Value;
             _wordsService = wordsService;
         }
 

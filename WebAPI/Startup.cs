@@ -31,10 +31,14 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
 using Microsoft.AspNetCore.Http.Features;
-using OnlineAuction.Services.Log;
 using OnlineAuction.Services.Products;
 using OnlineAuction.Services.Words;
 using OnlineAuction.Services.Popups;
+using OnlineAuction.Core.Models;
+using OnlineAuction.Services;
+using OnlineAuction.Data.Mapping;
+using AutoMapper;
+using Microsoft.Net.Http.Headers;
 
 namespace WebAPI
 {
@@ -56,6 +60,8 @@ namespace WebAPI
                 options.AddPolicy(
                         "AllowOrigin",
                         builder => builder.WithOrigins("*")
+                        .WithMethods("Post", "Get","Put","Delete")
+                        .WithHeaders(HeaderNames.ContentType)
                     );
             });
 
@@ -79,6 +85,18 @@ namespace WebAPI
             #region Context
 
             services.AddDbContext<OnlineAuctionContext>(options => options.UseSqlServer(appSettings.ConnectionStrings.SQLConnection, b => b.MigrationsAssembly("Data"))).AddUnitOfWork<OnlineAuctionContext>();
+
+            #endregion
+
+            #region Auto Mapper
+
+            AutoMapper.Configuration.MapperConfigurationExpression mapperConfig = new AutoMapper.Configuration.MapperConfigurationExpression();
+
+            mapperConfig.AllowNullCollections = true;
+
+            mapperConfig.AddProfile(new AutoMapperProfileConfiguration());
+
+            Mapper.Initialize(mapperConfig);
 
             #endregion
 
@@ -129,7 +147,7 @@ namespace WebAPI
 
             #endregion
 
-            services.AddTransient<IAppContext, OnlineAuction.Data.Models.AppContext>();
+            services.AddTransient<IAppContext, OnlineAuction.Core.Models.AppContext>();
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<ILanguagesService, LanguagesService>();
             services.AddTransient<ISiteSettingsService, SiteSettingsService>();
@@ -139,12 +157,12 @@ namespace WebAPI
             services.AddTransient<INewsService, NewsService>();
             services.AddTransient<IArtistService, ArtistService>();
             services.AddTransient<ISliderService, SliderService>();
-            services.AddTransient<ILogService, LogService>();
             services.AddTransient<IProductCategoryGroupService, ProductCategoryGroupService>();
             services.AddTransient<IProductCategoryService, ProductCategoryService>();
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IWordsService, WordsService>();
             services.AddTransient<IPopupsService, PopupsService>();
+            services.AddTransient<IFileService, FileService>();
 
             // Htpp Context Accessor
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();

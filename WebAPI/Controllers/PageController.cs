@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using OnlineAuction.Data.DbEntity;
 using OnlineAuction.Data.Models;
 using OnlineAuction.Services.Pages;
-using System.Collections.Generic;
 
 namespace WebAPI.Controllers
 {
@@ -14,15 +11,11 @@ namespace WebAPI.Controllers
     [Route("api/[controller]")]
     public class PageController : Controller
     {
-        private readonly AppSettings _appSettings;
         private readonly IPageService _pageService;
-        public PageController(IOptions<AppSettings> appSettings,
-            IPageService pageService)
+        public PageController(IPageService pageService)
         {
-            _appSettings = appSettings.Value;
             _pageService = pageService;
         }
-
 
         #region Pages
 

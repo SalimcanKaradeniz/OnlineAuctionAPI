@@ -10,6 +10,7 @@ namespace OnlineAuction.Data.Models
     {
         public ArtistsModel()
         {
+            this.CreatedAt = DateTime.Now;
             this.Efforts = new List<EffortsModel>();
         }
 

@@ -1,14 +1,14 @@
-﻿using OnlineAuction.Core.UnitOfWork;
+﻿using Core.Extensions;
+using Microsoft.Extensions.Options;
+using OnlineAuction.Core.Models;
+using OnlineAuction.Core.UnitOfWork;
 using OnlineAuction.Data.Context;
-using OnlineAuction.Data.DbEntity;
 using OnlineAuction.Data.Model;
 using OnlineAuction.Data.Models;
 using OnlineAuction.Services.Languages;
-using OnlineAuction.Services.Log;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace OnlineAuction.Services.News
 {
@@ -18,15 +18,19 @@ namespace OnlineAuction.Services.News
         private readonly ILanguagesService _languagesService;
         private readonly IAppContext _appContext;
         private readonly IServiceProvider _serviceProvider;
+        private readonly AppSettings _appSettings;
+
         public NewsService(IUnitOfWork<OnlineAuctionContext> unitOfWork,
             ILanguagesService languagesService,
             IAppContext appContext,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvider,
+            IOptions<AppSettings> appSettings)
         {
             _unitOfWork = unitOfWork;
             _languagesService = languagesService;
             _serviceProvider = serviceProvider;
             _appContext = appContext;
+            _appSettings = appSettings.Value;
         }
 
         public List<OnlineAuction.Data.DbEntity.News> GetNews()
@@ -79,7 +83,7 @@ namespace OnlineAuction.Services.News
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Haber eklenirken hata oluştu";
                 return returnModel;
@@ -133,7 +137,7 @@ namespace OnlineAuction.Services.News
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Haber düzenlenirken hata oluştu";
                 return returnModel;
@@ -171,7 +175,7 @@ namespace OnlineAuction.Services.News
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Haber düzenlenirken hata oluştu";
             }
@@ -213,7 +217,7 @@ namespace OnlineAuction.Services.News
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Haber silinirken hata oluştu";
                 return returnModel;
@@ -245,7 +249,7 @@ namespace OnlineAuction.Services.News
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Tüm haberler silinirken hata oluştu";

@@ -1,42 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using OnlineAuction.Data.DbEntity;
 using OnlineAuction.Data.Model;
 using OnlineAuction.Data.Models;
-using OnlineAuction.Data.Models.Users;
 using OnlineAuction.Services.FormSettingsService;
 using OnlineAuction.Services.Languages;
 using OnlineAuction.Services.SiteSettingsService;
 using OnlineAuction.Services.SocialMediaSettingsService;
-using OnlineAuction.Services.Users;
 
 namespace WebAPI.Controllers
 {
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
-    public class SettingController : Controller
+    public class SettingController : ControllerBase
     {
-        private readonly AppSettings _appSettings;
         private readonly ILanguagesService _languageService;
         private readonly ISocialMediaSettingsService _socialMediaSettingsService;
         private readonly ISiteSettingsService _siteSettingsService;
         private readonly IFormSettingsService _formSettingsService;
-        public SettingController(IOptions<AppSettings> appSettings,
-            ILanguagesService languageService,
+        public SettingController(ILanguagesService languageService,
             ISocialMediaSettingsService socialMediaSettingsService,
             ISiteSettingsService siteSettingsService,
             IFormSettingsService formSettingsService)
         {
-            _appSettings = appSettings.Value;
             _languageService = languageService;
             _socialMediaSettingsService = socialMediaSettingsService;
             _siteSettingsService = siteSettingsService;
@@ -76,22 +66,21 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/sitesettings/update")]
-        public IActionResult SiteSettingsUpdate([FromForm] IFormFile logo)
+        public IActionResult SiteSettingsUpdate([FromForm] SiteSettings model, IFormFile logo)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
-            SiteSettings model = JsonConvert.DeserializeObject<SiteSettings>(Request.Form["data"]);
-            
+
+            //if (!ModelState.IsValid)
+            //{
+            //    returnModel.IsSuccess = false;
+            //    returnModel.Message = "Lütfen zorunlu alanları doldurunuz";
+
+            //    return BadRequest(returnModel);
+            //}
+
             string existLogo = Request.Form["logo"];
-            
+
             model.Logo = existLogo;
-
-            if (!ModelState.IsValid)
-            {
-                returnModel.IsSuccess = false;
-                returnModel.Message = "Lütfen zorunlu alanları doldurunuz";
-
-                return BadRequest(returnModel);
-            }
 
             returnModel = _siteSettingsService.Update(model, logo);
 

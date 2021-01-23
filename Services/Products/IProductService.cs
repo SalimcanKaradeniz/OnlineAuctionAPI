@@ -13,5 +13,6 @@ namespace OnlineAuction.Services.Products
         ReturnModel<object> Add(ProductRequestModel model);
         ReturnModel<object> Update(ProductRequestModel model);
         ReturnModel<object> Delete(int id);
+        List<OnlineAuction.Data.DbEntity.ProductTypes> GetProductTypes();
     }
 }

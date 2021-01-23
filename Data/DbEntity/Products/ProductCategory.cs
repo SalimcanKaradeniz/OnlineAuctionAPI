@@ -11,6 +11,7 @@ namespace OnlineAuction.Data.DbEntity
     {
         public ProductCategory()
         {
+            this.IsActive = false;
             this.CreatedAt = DateTime.Now;
             this.Products = new List<Products>();
         }
@@ -18,13 +19,11 @@ namespace OnlineAuction.Data.DbEntity
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        public string Name { get; set; }
         [MaxLength]
-        public string ShortDescription_tr { get; set; }
+        public string Title_tr { get; set; }
         [MaxLength]
-        public string ShortDescription_en { get; set; }
-        [MaxLength]
-        public string PictureUrl { get; set; }
+        public string Title_en { get; set; }
+        public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
 
         public List<Products> Products { get; set; }

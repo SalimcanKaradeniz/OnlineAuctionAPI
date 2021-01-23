@@ -1,11 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Core.Extensions;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using OnlineAuction.Core.Models;
 using OnlineAuction.Core.UnitOfWork;
 using OnlineAuction.Data.Context;
 using OnlineAuction.Data.DbEntity;
 using OnlineAuction.Data.Enums.Pages;
 using OnlineAuction.Data.Models;
-using OnlineAuction.Services.Languages;
-using OnlineAuction.Services.Log;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,18 +17,18 @@ namespace OnlineAuction.Services.Pages
     public class PageService : IPageService
     {
         private readonly IUnitOfWork<OnlineAuctionContext> _unitOfWork;
-        private readonly ILanguagesService _languagesService;
         private readonly IAppContext _appContext;
         private readonly IServiceProvider _serviceProvider;
+        private readonly AppSettings _appSettings;
         public PageService(IUnitOfWork<OnlineAuctionContext> unitOfWork,
-            ILanguagesService languagesService,
             IAppContext appContext,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvider,
+            IOptions<AppSettings> appSettings)
         {
             _unitOfWork = unitOfWork;
-            _languagesService = languagesService;
             _appContext = appContext;
             _serviceProvider = serviceProvider;
+            _appSettings = appSettings.Value;
         }
 
         #region Utilities
@@ -247,7 +249,7 @@ namespace OnlineAuction.Services.Pages
                 }
                 catch (Exception ex)
                 {
-                    ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                    ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                     transaction.Rollback();
 
                     returnModel.IsSuccess = false;
@@ -332,7 +334,7 @@ namespace OnlineAuction.Services.Pages
                 }
                 catch (Exception ex)
                 {
-                    ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                    ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                     transaction.Rollback();
 
                     returnModel.IsSuccess = false;
@@ -433,7 +435,7 @@ namespace OnlineAuction.Services.Pages
                 }
                 catch (Exception ex)
                 {
-                    ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                    ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                     transaction.Rollback();
 
                     returnModel.IsSuccess = false;
@@ -530,7 +532,7 @@ namespace OnlineAuction.Services.Pages
                 }
                 catch (Exception ex)
                 {
-                    ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                    ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                     transaction.Rollback();
 
                     returnModel.IsSuccess = false;
@@ -572,7 +574,7 @@ namespace OnlineAuction.Services.Pages
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Sayfa eklenirken hata oluştu";
             }
@@ -621,7 +623,7 @@ namespace OnlineAuction.Services.Pages
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Sayfa düzenlenirken hata oluştu";
             }
@@ -675,7 +677,7 @@ namespace OnlineAuction.Services.Pages
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Sayfa Silinirken Bir Hata Oluştu";
                 return returnModel;
@@ -717,7 +719,7 @@ namespace OnlineAuction.Services.Pages
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Sayfa Silinirken Bir Hata Oluştu";
                 return returnModel;
@@ -766,7 +768,7 @@ namespace OnlineAuction.Services.Pages
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = " Galeri Sayfa Silinirken Bir Hata Oluştu";
                 return returnModel;

@@ -12,6 +12,7 @@ namespace OnlineAuction.Services.Products
         ProductCategory GetProductCategoryById(int id);
         ReturnModel<object> Add(ProductCategoryRequestModel model);
         ReturnModel<object> Update(ProductCategoryRequestModel model);
+        ReturnModel<object> CategoryIsActiveUpdate(ProductCategoryRequestModel model);
         ReturnModel<object> Delete(int id);
     }
 }

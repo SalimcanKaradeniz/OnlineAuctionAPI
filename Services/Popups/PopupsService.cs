@@ -1,30 +1,28 @@
-﻿using OnlineAuction.Core.UnitOfWork;
+﻿using Core.Extensions;
+using Microsoft.Extensions.Options;
+using OnlineAuction.Core.Models;
+using OnlineAuction.Core.UnitOfWork;
 using OnlineAuction.Data.Context;
-using OnlineAuction.Data.DbEntity;
-using OnlineAuction.Data.Model;
 using OnlineAuction.Data.Models;
-using OnlineAuction.Services.Languages;
-using OnlineAuction.Services.Log;
-using OnlineAuction.Services.Artists;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace OnlineAuction.Services.Popups
 {
     public class PopupsService : IPopupsService
     {
         private readonly IUnitOfWork<OnlineAuctionContext> _unitOfWork;
-        private readonly ILanguagesService _languagesService;
         private readonly IAppContext _appContext;
         private readonly IServiceProvider _serviceProvider;
-        public PopupsService(IUnitOfWork<OnlineAuctionContext> unitOfWork, ILanguagesService languagesService, IServiceProvider serviceProvider, IAppContext appContext)
+        private readonly AppSettings _appSettings;
+
+        public PopupsService(IUnitOfWork<OnlineAuctionContext> unitOfWork, IServiceProvider serviceProvider, IAppContext appContext, IOptions<AppSettings> appSettings)
         {
             _unitOfWork = unitOfWork;
-            _languagesService = languagesService;
             _appContext = appContext;
             _serviceProvider = serviceProvider;
+            _appSettings = appSettings.Value;
         }
 
         public List<OnlineAuction.Data.DbEntity.Popups> GetPopups()
@@ -72,7 +70,7 @@ namespace OnlineAuction.Services.Popups
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Popup eklenirken hata oluştu";
                 return returnModel;
@@ -122,7 +120,7 @@ namespace OnlineAuction.Services.Popups
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Popup düzenlenirken hata oluştu";
                 return returnModel;
@@ -160,7 +158,7 @@ namespace OnlineAuction.Services.Popups
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Popup eklenirken hata oluştu";
             }
@@ -202,7 +200,7 @@ namespace OnlineAuction.Services.Popups
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Popups silinirken hata oluştu";
                 return returnModel;
@@ -234,7 +232,7 @@ namespace OnlineAuction.Services.Popups
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Popups silinirken hata oluştu";
                 return returnModel;

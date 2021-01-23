@@ -6,16 +6,25 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using System.Text;
+using Core.Extensions;
+using Microsoft.Extensions.Options;
+using OnlineAuction.Core.Models;
 
 namespace OnlineAuction.Services.SocialMediaSettingsService
 {
     public class SocialMediaSettingsService : ISocialMediaSettingsService
     {
         private readonly IUnitOfWork<OnlineAuctionContext> _unitOfWork;
-        public SocialMediaSettingsService(IUnitOfWork<OnlineAuctionContext> unitOfWork)
+        private readonly IAppContext _appContext;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly AppSettings _appSettings;
+
+        public SocialMediaSettingsService(IUnitOfWork<OnlineAuctionContext> unitOfWork, IAppContext appContext, IServiceProvider serviceProvider, IOptions<AppSettings> appSettings)
         {
             _unitOfWork = unitOfWork;
+            _serviceProvider = serviceProvider;
+            _appContext = appContext;
+            _appSettings = appSettings.Value;
         }
 
         public List<SocialMediaSettings> GetSocialMediaSettings()
@@ -47,6 +56,7 @@ namespace OnlineAuction.Services.SocialMediaSettingsService
             }
             catch (Exception ex)
             {
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Sosyal Medya Ayarları Eklenirken hata oluştu";
                 return returnModel;
@@ -93,6 +103,7 @@ namespace OnlineAuction.Services.SocialMediaSettingsService
             }
             catch (Exception ex)
             {
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Sosyal Medya Ayarları düzenlenirken hata oluştu";
                 return returnModel;
@@ -142,6 +153,7 @@ namespace OnlineAuction.Services.SocialMediaSettingsService
             }
             catch (Exception ex)
             {
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Sosyal Medya Ayarları silinirken hata oluştu";
                 return returnModel;
@@ -157,6 +169,5 @@ namespace OnlineAuction.Services.SocialMediaSettingsService
         {
             return _unitOfWork.GetRepository<SocialMediaTypes>().GetAll().ToList();
         }
-
     }
 }

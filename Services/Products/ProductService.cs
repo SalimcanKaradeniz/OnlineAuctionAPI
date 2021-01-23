@@ -1,13 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Core.Extensions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
+using OnlineAuction.Core.Models;
 using OnlineAuction.Core.UnitOfWork;
 using OnlineAuction.Data.Context;
-using OnlineAuction.Data.DbEntity;
 using OnlineAuction.Data.Models;
-using OnlineAuction.Services.Log;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Security.Cryptography.X509Certificates;
 
 namespace OnlineAuction.Services.Products
 {
@@ -16,13 +17,17 @@ namespace OnlineAuction.Services.Products
         private readonly IUnitOfWork<OnlineAuctionContext> _unitOfWork;
         private readonly IAppContext _appContext;
         private readonly IServiceProvider _serviceProvider;
+        private readonly AppSettings _appSettings;
+
         public ProductService(IUnitOfWork<OnlineAuctionContext> unitOfWork,
             IAppContext appContext,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvider,
+            IOptions<AppSettings> appSettings)
         {
             _unitOfWork = unitOfWork;
             _appContext = appContext;
             _serviceProvider = serviceProvider;
+            _appSettings = appSettings.Value;
         }
 
         public List<OnlineAuction.Data.DbEntity.Products> GetProducts()
@@ -53,7 +58,7 @@ namespace OnlineAuction.Services.Products
                 product.Description_en = model.Product.Description_en;
                 product.Price = model.Product.Price;
                 product.IsActive = model.Product.IsActive;
-                
+
 
                 _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Products>().Insert(product);
                 int result = _unitOfWork.SaveChanges();
@@ -71,7 +76,7 @@ namespace OnlineAuction.Services.Products
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Ürün Eklenirken Hata Oluştu";
             }
@@ -122,7 +127,7 @@ namespace OnlineAuction.Services.Products
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Ürün Düzenlenirken Hata Oluştu";
             }
@@ -161,12 +166,17 @@ namespace OnlineAuction.Services.Products
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Ürün Silinirken Hata Oluştu";
             }
 
             return returnModel;
+        }
+
+        public List<OnlineAuction.Data.DbEntity.ProductTypes> GetProductTypes()
+        {
+            return _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.ProductTypes>().GetAll().ToList();
         }
     }
 }

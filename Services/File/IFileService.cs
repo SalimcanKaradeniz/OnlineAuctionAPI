@@ -8,6 +8,7 @@ namespace OnlineAuction.Services
 {
     public interface IFileService
     {
-        FileUploadResult FileUpload(IFormFile file);
+        //FileUploadResult FileUpload(IFormFile file);
+        string FileUplod(IFormFile file);
     }
 }

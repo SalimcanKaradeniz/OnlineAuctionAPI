@@ -2,27 +2,25 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using OnlineAuction.Data.DbEntity;
 using OnlineAuction.Data.Models;
-using OnlineAuction.Services.Pages;
 using OnlineAuction.Services.Artists;
+using OnlineAuction.Core.Models;
+using Newtonsoft.Json;
+using OnlineAuction.Data.DbEntity;
+using Microsoft.AspNetCore.Http;
 
 namespace WebAPI.Controllers
 {
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
-    public class ArtistController : Controller
+    public class ArtistController : ControllerBase
     {
-        private readonly AppSettings _appSettings;
         private readonly IArtistService _artistService;
-        public ArtistController(IOptions<AppSettings> appSettings,
-            IArtistService artistService)
+        public ArtistController(IArtistService artistService)
         {
-            _appSettings = appSettings.Value;
             _artistService = artistService;
         }
-
 
         [HttpGet]
         [Route("/artists")]
@@ -97,6 +95,55 @@ namespace WebAPI.Controllers
             else
                 return Conflict(returnModel);
         }
+
+        #region Yeni Artist Yapısı
+        //[HttpPost]
+        //[Route("/artists/add")]
+        //public IActionResult Add([FromForm] Artists model, [FromForm] IFormFile picture)
+        //{
+        //    ReturnModel<object> returnModel = new ReturnModel<object>();
+
+        //    if (!ModelState.IsValid)
+        //    {
+        //        returnModel.IsSuccess = false;
+        //        returnModel.Message = "Lütfen zorunlu alanları doldurunuz";
+
+        //        return BadRequest(returnModel);
+        //    }
+
+        //    returnModel = _artistService.Add(model, picture);
+
+        //    if (returnModel.IsSuccess)
+        //        return Ok(returnModel);
+        //    else
+        //        return Conflict(returnModel);
+        //}
+
+        //[HttpPost]
+        //[Route("/artists/update")]
+        //public IActionResult Update([FromForm] Artists model, [FromForm] IFormFile picture)
+        //{
+        //    ReturnModel<object> returnModel = new ReturnModel<object>();
+
+        //    if (!ModelState.IsValid)
+        //    {
+        //        returnModel.IsSuccess = false;
+        //        returnModel.Message = "Lütfen zorunlu alanları doldurunuz";
+
+        //        return BadRequest(returnModel);
+        //    }
+
+        //    string existPicture = Request.Form["picture"];
+        //    model.Picture = existPicture;
+
+        //    returnModel = _artistService.Update(model, picture);
+
+        //    if (returnModel.IsSuccess)
+        //        return Ok(returnModel);
+        //    else
+        //        return Conflict(returnModel);
+        //}
+        #endregion
 
         [HttpPost]
         [Route("/artists/isactiveupdate")]

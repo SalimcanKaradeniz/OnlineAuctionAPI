@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OnlineAuction.Data.Models
+namespace OnlineAuction.Core.Models
 {
     public class AppSettings
     {

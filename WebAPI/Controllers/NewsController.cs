@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using OnlineAuction.Core.Models;
 using OnlineAuction.Data.Model;
 using OnlineAuction.Data.Models;
 using OnlineAuction.Services.News;
@@ -13,15 +14,11 @@ namespace WebAPI.Controllers
     [Route("api/[controller]")]
     public class NewsController : Controller
     {
-        private readonly AppSettings _appSettings;
         private readonly INewsService _newsService;
-        public NewsController(IOptions<AppSettings> appSettings,
-            INewsService newsService)
+        public NewsController(INewsService newsService)
         {
-            _appSettings = appSettings.Value;
             _newsService = newsService;
         }
-
 
         [HttpGet]
         [Route("/news")]

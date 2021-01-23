@@ -1,20 +1,28 @@
-﻿using OnlineAuction.Core.UnitOfWork;
+﻿using Core.Extensions;
+using Microsoft.Extensions.Options;
+using OnlineAuction.Core.Models;
+using OnlineAuction.Core.UnitOfWork;
 using OnlineAuction.Data.Context;
 using OnlineAuction.Data.Models;
-using OnlineAuction.Services.Log;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace OnlineAuction.Services.Words
 {
     public class WordsService : IWordsService
     {
         private readonly IUnitOfWork<OnlineAuctionContext> _unitOfWork;
-        public WordsService(IUnitOfWork<OnlineAuctionContext> unitOfWork)
+        private readonly IAppContext _appContext;
+        private readonly IServiceProvider _serviceProvider;
+        private readonly AppSettings _appSettings;
+
+        public WordsService(IUnitOfWork<OnlineAuctionContext> unitOfWork, IAppContext appContext, IServiceProvider serviceProvider, IOptions<AppSettings> appSettings)
         {
             _unitOfWork = unitOfWork;
+            _appContext = appContext;
+            _serviceProvider = serviceProvider;
+            _appSettings = appSettings.Value;
         }
 
         public List<Data.DbEntity.Words> GetWords()
@@ -59,6 +67,7 @@ namespace OnlineAuction.Services.Words
             }
             catch (Exception ex)
             {
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Kelimeler eklenirken hata oluştu";
                 return returnModel;
@@ -102,6 +111,7 @@ namespace OnlineAuction.Services.Words
             }
             catch (Exception ex)
             {
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Kelimeler düzenlenirken hata oluştu";
                 return returnModel;
@@ -150,6 +160,7 @@ namespace OnlineAuction.Services.Words
             }
             catch (Exception ex)
             {
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Kelime Silinirken Bir Hata Oluştu";
                 return returnModel;
@@ -191,6 +202,7 @@ namespace OnlineAuction.Services.Words
             }
             catch (Exception ex)
             {
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Kelime Silinirken Bir Hata Oluştu";
                 return returnModel;

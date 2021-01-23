@@ -1,13 +1,13 @@
-﻿using OnlineAuction.Core.UnitOfWork;
+﻿using Core.Extensions;
+using Microsoft.Extensions.Options;
+using OnlineAuction.Core.Models;
+using OnlineAuction.Core.UnitOfWork;
 using OnlineAuction.Data.Context;
 using OnlineAuction.Data.DbEntity;
 using OnlineAuction.Data.Models;
-using OnlineAuction.Services.Log;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
 
 namespace OnlineAuction.Services.FormSettingsService
 {
@@ -16,11 +16,14 @@ namespace OnlineAuction.Services.FormSettingsService
         private readonly IUnitOfWork<OnlineAuctionContext> _unitOfWork;
         private readonly IAppContext _appContext;
         private readonly IServiceProvider _serviceProvider;
-        public FormSettingsService(IUnitOfWork<OnlineAuctionContext> unitOfWork, IAppContext appContext, IServiceProvider serviceProvider)
+        private readonly AppSettings _appSettings;
+
+        public FormSettingsService(IUnitOfWork<OnlineAuctionContext> unitOfWork, IAppContext appContext, IServiceProvider serviceProvider, IOptions<AppSettings> appSettings)
         {                                                                       
             _unitOfWork = unitOfWork;
             _serviceProvider = serviceProvider;
             _appContext = appContext;
+            _appSettings = appSettings.Value;
         }
 
         public List<FormSettings> GetFormSettings()
@@ -52,7 +55,7 @@ namespace OnlineAuction.Services.FormSettingsService
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Form Ayarları Eklenirken hata oluştu";
                 return returnModel;
@@ -96,7 +99,7 @@ namespace OnlineAuction.Services.FormSettingsService
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Form Ayarları düzenlenirken hata oluştu";
                 return returnModel;
@@ -146,7 +149,7 @@ namespace OnlineAuction.Services.FormSettingsService
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Form Ayarları silinirken hata oluştu";
                 return returnModel;

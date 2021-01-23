@@ -1,12 +1,13 @@
-﻿using OnlineAuction.Core.UnitOfWork;
+﻿using Core.Extensions;
+using Microsoft.Extensions.Options;
+using OnlineAuction.Core.Models;
+using OnlineAuction.Core.UnitOfWork;
 using OnlineAuction.Data.Context;
 using OnlineAuction.Data.DbEntity;
 using OnlineAuction.Data.Models;
-using OnlineAuction.Services.Log;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace OnlineAuction.Services.Products
 {
@@ -15,13 +16,17 @@ namespace OnlineAuction.Services.Products
         private readonly IUnitOfWork<OnlineAuctionContext> _unitOfWork;
         private readonly IAppContext _appContext;
         private readonly IServiceProvider _serviceProvider;
+        private readonly AppSettings _appSettings;
+
         public ProductCategoryService(IUnitOfWork<OnlineAuctionContext> unitOfWork,
             IAppContext appContext,
-            IServiceProvider serviceProvider)
+            IServiceProvider serviceProvider,
+            IOptions<AppSettings> appSettings)
         {
             _unitOfWork = unitOfWork;
             _appContext = appContext;
             _serviceProvider = serviceProvider;
+            _appSettings = appSettings.Value;
         }
 
         public List<ProductCategory> GetProductCategories()
@@ -41,10 +46,8 @@ namespace OnlineAuction.Services.Products
 
             try
             {
-                productCategory.Name = model.ProductCategory.Name;
-                productCategory.ShortDescription_tr = model.ProductCategory.ShortDescription_tr;
-                productCategory.ShortDescription_en = model.ProductCategory.ShortDescription_en;
-                productCategory.PictureUrl = model.ProductCategory.PictureUrl;
+                productCategory.Title_tr = model.ProductCategory.Title_tr;
+                productCategory.Title_en = model.ProductCategory.Title_en;
 
                 _unitOfWork.GetRepository<ProductCategory>().Insert(productCategory);
                 int result = _unitOfWork.SaveChanges();
@@ -62,7 +65,7 @@ namespace OnlineAuction.Services.Products
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Ürün Kategori Grubu Eklenirken Hata Oluştu";
             }
@@ -79,10 +82,9 @@ namespace OnlineAuction.Services.Products
 
                 if (productCategory != null)
                 {
-                    productCategory.Name = model.ProductCategory.Name;
-                    productCategory.ShortDescription_tr = model.ProductCategory.ShortDescription_tr;
-                    productCategory.ShortDescription_en = model.ProductCategory.ShortDescription_en;
-                    productCategory.PictureUrl = model.ProductCategory.PictureUrl;
+                    productCategory.Title_tr = model.ProductCategory.Title_tr;
+                    productCategory.Title_en = model.ProductCategory.Title_en;
+                    productCategory.IsActive = model.ProductCategory.IsActive;
 
                     _unitOfWork.GetRepository<ProductCategory>().Update(productCategory);
                     int result = _unitOfWork.SaveChanges();
@@ -106,9 +108,49 @@ namespace OnlineAuction.Services.Products
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Ürün Kategorisi Düzenlenirken Hata Oluştu";
+            }
+
+            return returnModel;
+        }
+
+        public ReturnModel<object> CategoryIsActiveUpdate(ProductCategoryRequestModel model)
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+
+            try
+            {
+                var category = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.ProductCategory>().GetFirstOrDefault(predicate: x => x.Id == model.ProductCategory.Id);
+                if (category != null)
+                {
+                    category.IsActive = model.ProductCategory.IsActive;
+                    _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.ProductCategory>().Update(category);
+
+                    var result = _unitOfWork.SaveChanges();
+                    if (result > 0)
+                    {
+                        returnModel.IsSuccess = true;
+                        returnModel.Message = "Kategori başarıyla düzenlendi";
+                    }
+                    else
+                    {
+                        returnModel.IsSuccess = false;
+                        returnModel.Message = "Kategori düzenlenemedi";
+                    }
+                }
+                else
+                {
+                    returnModel.IsSuccess = false;
+                    returnModel.Message = "Kategori bulunamadı";
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
+                returnModel.IsSuccess = false;
+                returnModel.Message = "Kategori eklenirken hata oluştu";
             }
 
             return returnModel;
@@ -145,7 +187,7 @@ namespace OnlineAuction.Services.Products
             }
             catch (Exception ex)
             {
-                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider);
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Ürün Kategorisi Silinirken Hata Oluştu";
             }

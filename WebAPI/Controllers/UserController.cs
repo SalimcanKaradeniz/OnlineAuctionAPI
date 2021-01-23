@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
 using OnlineAuction.Data.DbEntity;
 using OnlineAuction.Data.Models;
 using OnlineAuction.Data.Models.Users;
@@ -14,14 +10,12 @@ namespace WebAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UserController : Controller
     {
-        private readonly AppSettings _appSettings;
         private readonly IUserService _userService;
-        public UserController(IOptions<AppSettings> appSettings,
-            IUserService userService)
+        public UserController(IUserService userService)
         {
-            _appSettings = appSettings.Value;
             _userService = userService;
         }
 
@@ -76,10 +70,9 @@ namespace WebAPI.Controllers
             return Ok(_userService.GetUserById(id));
         }
 
-
         [HttpPost]
         [Route("/users/add")]
-        public IActionResult Add([FromBody] Users model)
+        public IActionResult Add([FromBody] UserRequestModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -101,7 +94,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/users/update")]
-        public IActionResult Update([FromBody] Users model)
+        public IActionResult Update([FromBody] UserRequestModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 

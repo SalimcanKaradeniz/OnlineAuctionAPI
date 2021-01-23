@@ -10,17 +10,16 @@ namespace OnlineAuction.Data.Models
     {
         public ProductCategoryModel()
         {
+            this.IsActive = false;
             this.CreatedAt = DateTime.Now;
         }
 
         public int Id { get; set; }
-        public string Name { get; set; }
         [MaxLength]
-        public string ShortDescription_tr { get; set; }
+        public string Title_tr { get; set; }
         [MaxLength]
-        public string ShortDescription_en { get; set; }
-        [MaxLength]
-        public string PictureUrl { get; set; }
+        public string Title_en { get; set; }
+        public bool IsActive { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 
