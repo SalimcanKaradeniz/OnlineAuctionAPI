@@ -9,7 +9,12 @@ namespace OnlineAuction.Data.Model
 {
     public class SiteSettingsRequestModel
     {
-        public SiteSettingsRequestModel()
+        public SiteSettingsModel Settings { get; set; }
+    }
+
+    public class SiteSettingsModel 
+    {
+        public SiteSettingsModel()
         {
             this.CreatedAt = DateTime.Now;
         }
@@ -43,11 +48,10 @@ namespace OnlineAuction.Data.Model
         public string OtherSocialMediaUrl { get; set; }
         [MaxLength]
         public string Map { get; set; }
-        //public string Logo { get; set; }
+        public string Logo { get; set; }
         public decimal? ComissionRate { get; set; }
         public int? TaxRate { get; set; }
         public bool IsActive { get; set; }
-        public IFormFile Logo { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

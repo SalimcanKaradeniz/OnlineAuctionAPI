@@ -66,23 +66,23 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/sitesettings/update")]
-        public IActionResult SiteSettingsUpdate([FromForm] SiteSettings model, IFormFile logo)
+        public IActionResult SiteSettingsUpdate([FromBody] SiteSettingsRequestModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
-            //if (!ModelState.IsValid)
-            //{
-            //    returnModel.IsSuccess = false;
-            //    returnModel.Message = "Lütfen zorunlu alanları doldurunuz";
+            if (!ModelState.IsValid)
+            {
+                returnModel.IsSuccess = false;
+                returnModel.Message = "Lütfen zorunlu alanları doldurunuz";
 
-            //    return BadRequest(returnModel);
-            //}
+                return BadRequest(returnModel);
+            }
 
-            string existLogo = Request.Form["logo"];
+            //string existLogo = Request.Form["logo"];
 
-            model.Logo = existLogo;
+            //model.Logo = existLogo;
 
-            returnModel = _siteSettingsService.Update(model, logo);
+            returnModel = _siteSettingsService.Update(model /*logo*/);
 
             if (returnModel.IsSuccess)
                 return Ok(returnModel);

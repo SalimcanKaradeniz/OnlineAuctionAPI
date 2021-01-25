@@ -5,6 +5,7 @@ using OnlineAuction.Core.Models;
 using OnlineAuction.Core.UnitOfWork;
 using OnlineAuction.Data.Context;
 using OnlineAuction.Data.DbEntity;
+using OnlineAuction.Data.Model;
 using OnlineAuction.Data.Models;
 using System;
 using System.Collections.Generic;
@@ -64,43 +65,43 @@ namespace OnlineAuction.Services.SiteSettingsService
             }
         }
 
-        public ReturnModel<object> Update(SiteSettings model, IFormFile logo)
+        public ReturnModel<object> Update(SiteSettingsRequestModel model/*, IFormFile logo*/)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
             try
             {
-                var siteSetting = GetSiteSettingsById(model.Id);
+                var siteSetting = GetSiteSettingsById(model.Settings.Id);
 
                 if (siteSetting != null)
                 {
-                    siteSetting.Title = model.Title;
-                    siteSetting.Description = model.Description;
-                    siteSetting.CellPhone = model.CellPhone;
-                    siteSetting.LandPhone = model.LandPhone;
-                    siteSetting.Fax = model.Fax;
-                    siteSetting.Email = model.Email;
-                    siteSetting.Address = model.Address;
-                    siteSetting.FacebookUrl = model.FacebookUrl;
-                    siteSetting.InstagramUrl = model.InstagramUrl;
-                    siteSetting.TwitterUrl = model.TwitterUrl;
-                    siteSetting.LinkedinUrl = model.LinkedinUrl;
-                    siteSetting.PinterestUrl = model.PinterestUrl;
-                    siteSetting.OtherSocialMediaUrl = model.OtherSocialMediaUrl;
-                    siteSetting.Map = model.Map;
-                    siteSetting.ComissionRate = model.ComissionRate;
-                    siteSetting.TaxRate = model.TaxRate;
-                    siteSetting.IsActive = model.IsActive;
+                    siteSetting.Title = model.Settings.Title;
+                    siteSetting.Description = model.Settings.Description;
+                    siteSetting.CellPhone = model.Settings.CellPhone;
+                    siteSetting.LandPhone = model.Settings.LandPhone;
+                    siteSetting.Fax = model.Settings.Fax;
+                    siteSetting.Email = model.Settings.Email;
+                    siteSetting.Address = model.Settings.Address;
+                    siteSetting.FacebookUrl = model.Settings.FacebookUrl;
+                    siteSetting.InstagramUrl = model.Settings.InstagramUrl;
+                    siteSetting.TwitterUrl = model.Settings.TwitterUrl;
+                    siteSetting.LinkedinUrl = model.Settings.LinkedinUrl;
+                    siteSetting.PinterestUrl = model.Settings.PinterestUrl;
+                    siteSetting.OtherSocialMediaUrl = model.Settings.OtherSocialMediaUrl;
+                    siteSetting.Map = model.Settings.Map;
+                    siteSetting.ComissionRate = model.Settings.ComissionRate;
+                    siteSetting.TaxRate = model.Settings.TaxRate;
+                    siteSetting.IsActive = model.Settings.IsActive;
 
-                    if (!string.IsNullOrEmpty(model.Logo))
-                    {
-                        siteSetting.Logo = model.Logo;
-                    }
-                    else
-                    {
-                        if (logo != null)
-                            siteSetting.Logo = _fileService.FileUplod(logo);
-                    }
+                    //if (!string.IsNullOrEmpty(model.Logo))
+                    //{
+                    //    siteSetting.Logo = model.Logo;
+                    //}
+                    //else
+                    //{
+                    //    if (logo != null)
+                    //        siteSetting.Logo = _fileService.FileUplod(logo);
+                    //}
 
                     _unitOfWork.GetRepository<SiteSettings>().Update(siteSetting);
 
