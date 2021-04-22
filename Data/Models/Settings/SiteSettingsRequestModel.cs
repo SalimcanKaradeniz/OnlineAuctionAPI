@@ -5,21 +5,20 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace OnlineAuction.Data.Model
+namespace OnlineAuction.Data.Models
 {
-    public class SiteSettingsRequestModel
-    {
-        public SiteSettingsModel Settings { get; set; }
-    }
-
-    public class SiteSettingsModel 
+    public class SiteSettingsModel
     {
         public SiteSettingsModel()
         {
+            this.ComissionRate = 0M;
+            this.TaxRate = 0;
+            this.IsActive = false;
             this.CreatedAt = DateTime.Now;
         }
 
         public int Id { get; set; }
+        public int LangId { get; set; }
         [MaxLength(250)]
         public string Title { get; set; }
         [MaxLength(250)]
@@ -42,16 +41,25 @@ namespace OnlineAuction.Data.Model
         public string TwitterUrl { get; set; }
         [MaxLength(250)]
         public string LinkedinUrl { get; set; }
-        [MaxLength(250), Required]
+        [MaxLength(250)]
         public string PinterestUrl { get; set; }
         [MaxLength(250)]
         public string OtherSocialMediaUrl { get; set; }
         [MaxLength]
         public string Map { get; set; }
+        [MaxLength]
         public string Logo { get; set; }
-        public decimal? ComissionRate { get; set; }
-        public int? TaxRate { get; set; }
+        [Required]
+        public decimal ComissionRate { get; set; }
+        [Required]
+        public int TaxRate { get; set; }
+        [Required]
         public bool IsActive { get; set; }
+        [Required]
         public DateTime CreatedAt { get; set; }
+        [MaxLength(500)]
+        public string GoogleRecaptchaSecretKey { get; set; }
+        [MaxLength(500)]
+        public string GoogleRecaptchaSiteKey { get; set; }
     }
 }

@@ -39,7 +39,7 @@ namespace OnlineAuction.Data.DbEntity
         [MaxLength(250)]
         public string Address { get; set; }
         public bool IsActive { get; set; }
-        public int? MemberType { get; set; }
+        public int UserType { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

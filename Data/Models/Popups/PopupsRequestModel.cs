@@ -6,10 +6,6 @@ using System.Text;
 
 namespace OnlineAuction.Data.Models
 {
-    public class PopupsRequestModel 
-    {
-        public PopupsModel Popups { get; set; }
-    }
     public class PopupsModel
     {
         public PopupsModel()
@@ -18,19 +14,17 @@ namespace OnlineAuction.Data.Models
         }
 
         public int Id { get; set; }
+        public int LangId { get; set; }
         [MaxLength(250)]
-        public string Title_tr { get; set; }
-        [MaxLength(250)]
-        public string Title_en { get; set; }
+        public string Title { get; set; }
         [MaxLength]
-        public string Description_tr { get; set; }
-        [MaxLength]
-        public string Description_en { get; set; }
+        public string Description { get; set; }
         [MaxLength]
         public string RedirectionLink { get; set; }
         [MaxLength]
         public string PictureUrl { get; set; }
         public bool IsActive { get; set; }
+        public int? Rank { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

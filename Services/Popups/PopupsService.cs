@@ -37,20 +37,21 @@ namespace OnlineAuction.Services.Popups
         {
             return _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Popups>().GetFirstOrDefault(predicate: x => x.Id == id);
         }
-        public ReturnModel<object> Add(PopupsRequestModel model)
+        public ReturnModel<object> Add(PopupsModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
             OnlineAuction.Data.DbEntity.Popups popupEntity = new OnlineAuction.Data.DbEntity.Popups();
 
             try
             {
-                popupEntity.Title_tr = model.Popups.Title_tr;
-                popupEntity.Title_en = model.Popups.Title_en;
-                popupEntity.Description_tr = model.Popups.Description_tr;
-                popupEntity.Description_en = model.Popups.Description_en;
-                popupEntity.RedirectionLink = model.Popups.RedirectionLink;
-                popupEntity.PictureUrl = model.Popups.PictureUrl;
-                popupEntity.IsActive = model.Popups.IsActive;
+                popupEntity.LangId = model.LangId;
+                popupEntity.Title = model.Title;
+                popupEntity.Description = model.Description;
+                popupEntity.RedirectionLink = model.RedirectionLink;
+                popupEntity.PictureUrl = model.PictureUrl;
+                popupEntity.IsActive = model.IsActive;
+                popupEntity.Rank = model.Rank;
+                popupEntity.LangId = model.LangId;
 
                 _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Popups>().Insert(popupEntity);
 
@@ -76,24 +77,24 @@ namespace OnlineAuction.Services.Popups
                 return returnModel;
             }
         }
-        public ReturnModel<object> Update(PopupsRequestModel model)
+        public ReturnModel<object> Update(PopupsModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
             try
             {
-                var popup = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Popups>().GetFirstOrDefault(predicate: x => x.Id == model.Popups.Id);
+                var popup = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Popups>().GetFirstOrDefault(predicate: x => x.Id == model.Id);
 
                 if (popup != null)
                 {
 
-                    popup.Title_tr = model.Popups.Title_tr;
-                    popup.Title_en = model.Popups.Title_en;
-                    popup.Description_tr = model.Popups.Description_tr;
-                    popup.Description_en = model.Popups.Description_en;
-                    popup.RedirectionLink = model.Popups.RedirectionLink;
-                    popup.PictureUrl = model.Popups.PictureUrl;
-                    popup.IsActive = model.Popups.IsActive;
+                    popup.Title = model.Title;
+                    popup.Description = model.Description;
+                    popup.RedirectionLink = model.RedirectionLink;
+                    popup.PictureUrl = model.PictureUrl;
+                    popup.IsActive = model.IsActive;
+                    popup.Rank = model.Rank;
+                    popup.LangId = model.LangId;
 
                     _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Popups>().Update(popup);
 
@@ -126,16 +127,16 @@ namespace OnlineAuction.Services.Popups
                 return returnModel;
             }
         }
-        public ReturnModel<object> PopupIsActiveUpdate(PopupsRequestModel model)
+        public ReturnModel<object> PopupIsActiveUpdate(PopupsModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
             try
             {
-                var popup = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Popups>().GetFirstOrDefault(predicate: x => x.Id == model.Popups.Id);
+                var popup = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Popups>().GetFirstOrDefault(predicate: x => x.Id == model.Id);
                 if (popup != null)
                 {
-                    popup.IsActive = model.Popups.IsActive;
+                    popup.IsActive = model.IsActive;
                     _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Popups>().Update(popup);
 
                     var result = _unitOfWork.SaveChanges();

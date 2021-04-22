@@ -64,7 +64,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/sliders/add")]
-        public IActionResult Add([FromBody] SliderRequestModel model)
+        public IActionResult Add([FromBody] SlidersModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -86,7 +86,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/sliders/update")]
-        public IActionResult Update([FromBody] SliderRequestModel model)
+        public IActionResult Update([FromForm] SlidersModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -108,7 +108,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/sliders/isactiveupdate")]
-        public IActionResult SliderIsActiveUpdate([FromBody] SliderRequestModel model)
+        public IActionResult SliderIsActiveUpdate([FromForm] SlidersModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 

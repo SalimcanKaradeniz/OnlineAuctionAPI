@@ -39,6 +39,7 @@ using OnlineAuction.Services;
 using OnlineAuction.Data.Mapping;
 using AutoMapper;
 using Microsoft.Net.Http.Headers;
+using OnlineAuction.Services.Exhibitions;
 
 namespace WebAPI
 {
@@ -163,6 +164,7 @@ namespace WebAPI
             services.AddTransient<IWordsService, WordsService>();
             services.AddTransient<IPopupsService, PopupsService>();
             services.AddTransient<IFileService, FileService>();
+            services.AddTransient<IExhibitionsService, ExhibitionsService>();
 
             // Htpp Context Accessor
             services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();

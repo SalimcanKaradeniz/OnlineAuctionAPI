@@ -14,14 +14,11 @@ namespace OnlineAuction.Data.Models
         }
 
         public int Id { get; set; }
+        public int LangId { get; set; }
         [MaxLength(250)]
-        public string TR_EffortName { get; set; }
+        public string EffortName { get; set; }
         [MaxLength(250)]
-        public string EN_EffortName { get; set; }
-        [MaxLength(250)]
-        public string TR_UsedTechnic { get; set; }
-        [MaxLength(250)]
-        public string EN_UsedTechnic { get; set; }
+        public string UsedTechnic { get; set; }
         [MaxLength(250)]
         public string ArtistTitle { get; set; }
         public int? ArtistId { get; set; }

@@ -39,15 +39,17 @@ namespace OnlineAuction.Services.Products
             return _unitOfWork.GetRepository<ProductCategory>().GetFirstOrDefault(predicate: x => x.Id == id);
         }
 
-        public ReturnModel<object> Add(ProductCategoryRequestModel model)
+        public ReturnModel<object> Add(ProductCategoryModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
             ProductCategory productCategory = new ProductCategory();
 
             try
             {
-                productCategory.Title_tr = model.ProductCategory.Title_tr;
-                productCategory.Title_en = model.ProductCategory.Title_en;
+                productCategory.Title_tr = model.Title_tr;
+                productCategory.Title_en = model.Title_en;
+                productCategory.Rank = model.Rank;
+                productCategory.LangId = model.LangId;
 
                 _unitOfWork.GetRepository<ProductCategory>().Insert(productCategory);
                 int result = _unitOfWork.SaveChanges();
@@ -73,18 +75,20 @@ namespace OnlineAuction.Services.Products
             return returnModel;
         }
 
-        public ReturnModel<object> Update(ProductCategoryRequestModel model)
+        public ReturnModel<object> Update(ProductCategoryModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
             try
             {
-                var productCategory = _unitOfWork.GetRepository<ProductCategory>().GetFirstOrDefault(predicate: x => x.Id == model.ProductCategory.Id);
+                var productCategory = _unitOfWork.GetRepository<ProductCategory>().GetFirstOrDefault(predicate: x => x.Id == model.Id);
 
                 if (productCategory != null)
                 {
-                    productCategory.Title_tr = model.ProductCategory.Title_tr;
-                    productCategory.Title_en = model.ProductCategory.Title_en;
-                    productCategory.IsActive = model.ProductCategory.IsActive;
+                    productCategory.Title_tr = model.Title_tr;
+                    productCategory.Title_en = model.Title_en;
+                    productCategory.IsActive = model.IsActive;
+                    productCategory.Rank = model.Rank;
+                    productCategory.LangId = model.LangId;
 
                     _unitOfWork.GetRepository<ProductCategory>().Update(productCategory);
                     int result = _unitOfWork.SaveChanges();
@@ -116,16 +120,16 @@ namespace OnlineAuction.Services.Products
             return returnModel;
         }
 
-        public ReturnModel<object> CategoryIsActiveUpdate(ProductCategoryRequestModel model)
+        public ReturnModel<object> CategoryIsActiveUpdate(ProductCategoryModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
             try
             {
-                var category = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.ProductCategory>().GetFirstOrDefault(predicate: x => x.Id == model.ProductCategory.Id);
+                var category = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.ProductCategory>().GetFirstOrDefault(predicate: x => x.Id == model.Id);
                 if (category != null)
                 {
-                    category.IsActive = model.ProductCategory.IsActive;
+                    category.IsActive = model.IsActive;
                     _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.ProductCategory>().Update(category);
 
                     var result = _unitOfWork.SaveChanges();

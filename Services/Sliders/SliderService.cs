@@ -37,24 +37,27 @@ namespace OnlineAuction.Services.Sliders
         {
             return _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Sliders>().GetFirstOrDefault(predicate: x => x.Id == id);
         }
-        public ReturnModel<object> Add(SliderRequestModel model)
+        public ReturnModel<object> Add(SlidersModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
             OnlineAuction.Data.DbEntity.Sliders slidertEntity = new OnlineAuction.Data.DbEntity.Sliders();
 
             try
             {
-                slidertEntity.Link = model.Slider.Link;
-                slidertEntity.Picture = model.Slider.Picture;
-                slidertEntity.IsActive = model.Slider.IsActive;
+                slidertEntity.LangId = model.LangId;
+                slidertEntity.Link = model.Link;
+                slidertEntity.Picture = model.Picture;
+                slidertEntity.IsActive = model.IsActive;
 
-                slidertEntity.Title_tr = model.Slider.Title_tr;
-                slidertEntity.Summary_tr = model.Slider.Summary_tr;
-                slidertEntity.Content_tr = model.Slider.Content_tr;
+                slidertEntity.Title_tr = model.Title_tr;
+                slidertEntity.Summary_tr = model.Summary_tr;
+                slidertEntity.Content_tr = model.Content_tr;
 
-                slidertEntity.Title_en = model.Slider.Title_en;
-                slidertEntity.Summary_en = model.Slider.Summary_en;
-                slidertEntity.Content_en = model.Slider.Content_en;
+                slidertEntity.Title_en = model.Title_en;
+                slidertEntity.Summary_en = model.Summary_en;
+                slidertEntity.Content_en = model.Content_en;
+
+                slidertEntity.Rank = model.Rank;
 
                 _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Sliders>().Insert(slidertEntity);
 
@@ -80,28 +83,27 @@ namespace OnlineAuction.Services.Sliders
                 return returnModel;
             }
         }
-        public ReturnModel<object> Update(SliderRequestModel model)
+        public ReturnModel<object> Update(SlidersModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
             try
             {
-                var slider = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Sliders>().GetFirstOrDefault(predicate: x => x.Id == model.Slider.Id);
+                var slider = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Sliders>().GetFirstOrDefault(predicate: x => x.Id == model.Id);
 
                 if (slider != null)
                 {
-
-                    slider.Link = model.Slider.Link;
-                    slider.Picture = model.Slider.Picture;
-                    slider.IsActive = model.Slider.IsActive;
-
-                    slider.Title_tr = model.Slider.Title_tr;
-                    slider.Summary_tr = model.Slider.Summary_tr;
-                    slider.Content_tr = model.Slider.Content_tr;
-
-                    slider.Title_en = model.Slider.Title_en;
-                    slider.Summary_en = model.Slider.Summary_en;
-                    slider.Content_en = model.Slider.Content_en;
+                    slider.LangId = model.LangId;
+                    slider.Link = model.Link;
+                    slider.Picture = model.Picture;
+                    slider.IsActive = model.IsActive;
+                    slider.Title_tr = model.Title_tr;
+                    slider.Summary_tr = model.Summary_tr;
+                    slider.Content_tr = model.Content_tr;
+                    slider.Title_en = model.Title_en;
+                    slider.Summary_en = model.Summary_en;
+                    slider.Content_en = model.Content_en;
+                    slider.Rank = model.Rank;
 
                     _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Sliders>().Update(slider);
 
@@ -134,16 +136,16 @@ namespace OnlineAuction.Services.Sliders
                 return returnModel;
             }
         }
-        public ReturnModel<object> SliderIsActiveUpdate(SliderRequestModel model)
+        public ReturnModel<object> SliderIsActiveUpdate(SlidersModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
             try
             {
-                var slider = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Sliders>().GetFirstOrDefault(predicate: x => x.Id == model.Slider.Id);
+                var slider = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Sliders>().GetFirstOrDefault(predicate: x => x.Id == model.Id);
                 if (slider != null)
                 {
-                    slider.IsActive = model.Slider.IsActive;
+                    slider.IsActive = model.IsActive;
                     _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Sliders>().Update(slider);
 
                     var result = _unitOfWork.SaveChanges();

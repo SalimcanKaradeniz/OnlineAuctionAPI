@@ -17,6 +17,7 @@ namespace OnlineAuction.Data.DbEntity
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        public int LangId { get; set; }
         [MaxLength(250)]
         public string Title_tr { get; set; }
         [MaxLength(250)]
@@ -34,6 +35,7 @@ namespace OnlineAuction.Data.DbEntity
         [MaxLength]
         public string Picture { get; set; }
         public bool IsActive { get; set; }
+        public int? Rank { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }

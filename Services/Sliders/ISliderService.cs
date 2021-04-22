@@ -11,9 +11,9 @@ namespace OnlineAuction.Services.Sliders
         List<OnlineAuction.Data.DbEntity.Sliders> GetSliders();
         List<OnlineAuction.Data.DbEntity.Sliders> GetActiveSliders();
         OnlineAuction.Data.DbEntity.Sliders GetSliderById(int id);
-        ReturnModel<object> Add(SliderRequestModel model);
-        ReturnModel<object> Update(SliderRequestModel model);
-        ReturnModel<object> SliderIsActiveUpdate(SliderRequestModel model);
+        ReturnModel<object> Add(SlidersModel model);
+        ReturnModel<object> Update(SlidersModel model);
+        ReturnModel<object> SliderIsActiveUpdate(SlidersModel model);
         ReturnModel<object> Delete(int id);
         ReturnModel<object> DeleteAll();
     }

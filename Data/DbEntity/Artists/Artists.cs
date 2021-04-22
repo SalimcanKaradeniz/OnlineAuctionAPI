@@ -18,15 +18,15 @@ namespace OnlineAuction.Data.DbEntity
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        public int LangId { get; set; }
         [MaxLength(250)]
         public string NameSurname { get; set; }
         [MaxLength]
-        public string About_tr { get; set; }
-        [MaxLength]
-        public string About_en { get; set; }
+        public string About { get; set; }
         [MaxLength]
         public string Picture { get; set; }
         public bool IsActive { get; set; }
+        public int? Rank { get; set; }
         public DateTime? BirthDate { get; set; }
         public DateTime? DateOfDeath { get; set; }
         public DateTime CreatedAt { get; set; }

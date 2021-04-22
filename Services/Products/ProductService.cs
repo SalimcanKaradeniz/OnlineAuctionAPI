@@ -40,25 +40,25 @@ namespace OnlineAuction.Services.Products
             return _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Products>().GetFirstOrDefault(predicate: x => x.Id == id);
         }
 
-        public ReturnModel<object> Add(ProductRequestModel model)
+        public ReturnModel<object> Add(ProductsModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
             OnlineAuction.Data.DbEntity.Products product = new OnlineAuction.Data.DbEntity.Products();
 
             try
             {
-                product.Name = model.Product.Name;
-                product.CategoryId = model.Product.CategoryId;
-                product.ArtistId = model.Product.ArtistId;
-                product.Type = model.Product.Type;
-                product.DiscountRate = model.Product.DiscountRate;
-                product.Code = model.Product.Code;
-                product.Stock = model.Product.Stock;
-                product.Description_tr = model.Product.Description_tr;
-                product.Description_en = model.Product.Description_en;
-                product.Price = model.Product.Price;
-                product.IsActive = model.Product.IsActive;
-
+                product.Name = model.Name;
+                product.CategoryId = model.CategoryId;
+                product.ArtistId = model.ArtistId;
+                product.Type = model.Type;
+                product.DiscountRate = model.DiscountRate;
+                product.Code = model.Code;
+                product.Stock = model.Stock;
+                product.Description = model.Description;
+                product.Price = model.Price;
+                product.IsActive = model.IsActive;
+                product.Rank = model.Rank;
+                product.LangId = model.LangId;
 
                 _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Products>().Insert(product);
                 int result = _unitOfWork.SaveChanges();
@@ -84,26 +84,27 @@ namespace OnlineAuction.Services.Products
             return returnModel;
         }
 
-        public ReturnModel<object> Update(ProductRequestModel model)
+        public ReturnModel<object> Update(ProductsModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
             try
             {
-                var product = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Products>().GetFirstOrDefault(predicate: x => x.Id == model.Product.Id);
+                var product = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Products>().GetFirstOrDefault(predicate: x => x.Id == model.Id);
 
                 if (product != null)
                 {
-                    product.Name = model.Product.Name;
-                    product.CategoryId = model.Product.CategoryId;
-                    product.ArtistId = model.Product.ArtistId;
-                    product.Type = model.Product.Type;
-                    product.DiscountRate = model.Product.DiscountRate;
-                    product.Code = model.Product.Code;
-                    product.Stock = model.Product.Stock;
-                    product.Description_tr = model.Product.Description_tr;
-                    product.Description_en = model.Product.Description_en;
-                    product.Price = model.Product.Price;
-                    product.IsActive = model.Product.IsActive;
+                    product.Name = model.Name;
+                    product.CategoryId = model.CategoryId;
+                    product.ArtistId = model.ArtistId;
+                    product.Type = model.Type;
+                    product.DiscountRate = model.DiscountRate;
+                    product.Code = model.Code;
+                    product.Stock = model.Stock;
+                    product.Description = model.Description;
+                    product.Price = model.Price;
+                    product.IsActive = model.IsActive;
+                    product.Rank = model.Rank;
+                    product.LangId = model.LangId;
 
                     _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Products>().Update(product);
                     int result = _unitOfWork.SaveChanges();
@@ -130,6 +131,88 @@ namespace OnlineAuction.Services.Products
                 ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
                 returnModel.IsSuccess = false;
                 returnModel.Message = "Ürün Düzenlenirken Hata Oluştu";
+            }
+
+            return returnModel;
+        }
+
+        public ReturnModel<object> ProductIsActiveUpdate(ProductsModel model)
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+            try
+            {
+                var product = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Products>().GetFirstOrDefault(predicate: x => x.Id == model.Id);
+
+                if (product != null)
+                {
+                    product.IsActive = model.IsActive;
+
+                    _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Products>().Update(product);
+                    int result = _unitOfWork.SaveChanges();
+
+                    if (result > 0)
+                    {
+                        returnModel.IsSuccess = true;
+                        returnModel.Message = "Ürün Durumu Güncellendi";
+                    }
+                    else
+                    {
+                        returnModel.IsSuccess = false;
+                        returnModel.Message = "Ürün Durumu Güncellenemedi";
+                    }
+                }
+                else
+                {
+                    returnModel.IsSuccess = false;
+                    returnModel.Message = "Ürün Durumu Güncellenemedi";
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
+                returnModel.IsSuccess = false;
+                returnModel.Message = "Ürün Durumu Güncellenirken Hata Oluştu";
+            }
+
+            return returnModel;
+        }
+
+        public ReturnModel<object> ProductRankUpdate(ProductsModel model)
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+            try
+            {
+                var product = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Products>().GetFirstOrDefault(predicate: x => x.Id == model.Id);
+
+                if (product != null)
+                {
+                    product.IsActive = model.IsActive;
+
+                    _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Products>().Update(product);
+                    int result = _unitOfWork.SaveChanges();
+
+                    if (result > 0)
+                    {
+                        returnModel.IsSuccess = true;
+                        returnModel.Message = "Ürün Durumu Güncellendi";
+                    }
+                    else
+                    {
+                        returnModel.IsSuccess = false;
+                        returnModel.Message = "Ürün Durumu Güncellenemedi";
+                    }
+                }
+                else
+                {
+                    returnModel.IsSuccess = false;
+                    returnModel.Message = "Ürün Durumu Güncellenemedi";
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
+                returnModel.IsSuccess = false;
+                returnModel.Message = "Ürün Durumu Güncellenirken Hata Oluştu";
             }
 
             return returnModel;
@@ -177,6 +260,45 @@ namespace OnlineAuction.Services.Products
         public List<OnlineAuction.Data.DbEntity.ProductTypes> GetProductTypes()
         {
             return _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.ProductTypes>().GetAll().ToList();
+        }
+
+        public ReturnModel<object> DeleteAll()
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+            try
+            {
+                var products = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Products>().GetAll();
+
+                if (products != null)
+                {
+                    _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Products>().Delete(products);
+                    int result = _unitOfWork.SaveChanges();
+
+                    if (result > 0)
+                    {
+                        returnModel.IsSuccess = true;
+                        returnModel.Message = "Ürünler Silindi";
+                    }
+                    else
+                    {
+                        returnModel.IsSuccess = false;
+                        returnModel.Message = "Ürünler Silinemedi";
+                    }
+                }
+                else
+                {
+                    returnModel.IsSuccess = false;
+                    returnModel.Message = "Ürünler Bulunamadı";
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
+                returnModel.IsSuccess = false;
+                returnModel.Message = "Ürünler Silinirken Hata Oluştu";
+            }
+
+            return returnModel;
         }
     }
 }

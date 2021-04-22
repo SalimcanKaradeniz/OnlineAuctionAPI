@@ -18,6 +18,7 @@ namespace OnlineAuction.Data.DbEntity
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        public int LangId { get; set; }
         public int CategoryId { get; set; }
         public int? ArtistId { get; set; }
         public int? Type { get; set; }
@@ -28,11 +29,11 @@ namespace OnlineAuction.Data.DbEntity
         public string Code { get; set; }
         public int? Stock { get; set; }
         [MaxLength]
-        public string Description_tr { get; set; }
+        public string Description { get; set; }
         [MaxLength]
-        public string Description_en { get; set; }
         public decimal Price { get; set; }
         public bool IsActive { get; set; }
+        public int? Rank { get; set; }
         public DateTime CreatedAt { get; set; }
 
         [ForeignKey("CategoryId")]

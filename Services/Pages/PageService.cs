@@ -60,14 +60,10 @@ namespace OnlineAuction.Services.Pages
                                                     PictureUrl = pb.PictureUrl,
                                                     CreatedAt = pb.CreatedAt
                                                 }).ToList(),
-                                 Title_tr = p.Title_tr,
-                                 Title_en = p.Title_en,
-                                 Keywords_tr = p.Keywords_tr,
-                                 Keywords_en = p.Keywords_en,
-                                 Detail_tr = p.Detail_tr,
-                                 Detail_en = p.Detail_en,
-                                 Description_tr = p.Description_tr,
-                                 Description_en = p.Description_en,
+                                 Title = p.Title,
+                                 Keywords = p.Keywords,
+                                 Detail = p.Detail,
+                                 Description = p.Description,
                                  IsActive = p.IsActive,
                                  IsFooter = p.IsFooter,
                                  IsMain = p.IsMain,
@@ -109,14 +105,10 @@ namespace OnlineAuction.Services.Pages
                                                     PictureUrl = pb.PictureUrl,
                                                     CreatedAt = pb.CreatedAt
                                                 }).ToList(),
-                                 Title_tr = sp.Title_tr,
-                                 Title_en = sp.Title_en,
-                                 Keywords_tr = sp.Keywords_tr,
-                                 Keywords_en = sp.Keywords_en,
-                                 Detail_tr = sp.Detail_tr,
-                                 Detail_en = sp.Detail_en,
-                                 Description_tr = sp.Description_tr,
-                                 Description_en = sp.Description_en,
+                                 Title = sp.Title,
+                                 Keywords = sp.Keywords,
+                                 Detail = sp.Detail,
+                                 Description = sp.Description,
                                  IsActive = sp.IsActive,
                                  IsFooter = sp.IsFooter,
                                  IsMain = sp.IsMain,
@@ -185,23 +177,17 @@ namespace OnlineAuction.Services.Pages
                 {
                     #region Update Fields
 
-                    pageEntity.ParentId = model.Page.ParentId;
-                    pageEntity.IsActive = model.Page.IsActive;
-                    pageEntity.IsFooter = model.Page.IsFooter;
-                    pageEntity.IsMain = model.Page.IsMain;
-                    pageEntity.RedirectionLink = model.Page.RedirectionLink;
-                    pageEntity.SpecificationId = model.Page.SpecificationId;
-
-                    pageEntity.Title_tr = model.Page.Title_tr;
-                    pageEntity.Keywords_tr = model.Page.Keywords_tr;
-                    pageEntity.Description_tr = model.Page.Description_tr;
-                    pageEntity.Detail_tr = model.Page.Detail_tr;
-
-                    pageEntity.Title_en = model.Page.Title_en;
-                    pageEntity.Keywords_en = model.Page.Keywords_en;
-                    pageEntity.Description_en = model.Page.Description_en;
-                    pageEntity.Detail_en = model.Page.Detail_en;
-                    pageEntity.Rank = model.Page.Rank;
+                    pageEntity.ParentId = model.ParentId;
+                    pageEntity.IsActive = model.IsActive;
+                    pageEntity.IsFooter = model.IsFooter;
+                    pageEntity.IsMain = model.IsMain;
+                    pageEntity.RedirectionLink = model.RedirectionLink;
+                    pageEntity.SpecificationId = model.SpecificationId;
+                    pageEntity.Title = model.Title;
+                    pageEntity.Keywords = model.Keywords;
+                    pageEntity.Description = model.Description;
+                    pageEntity.Detail = model.Detail;
+                    pageEntity.Rank = model.Rank;
 
                     #endregion
 
@@ -212,9 +198,9 @@ namespace OnlineAuction.Services.Pages
                     {
                         #region Prepare Page Banner Model
 
-                        if (model.Page.PageBanners.Any())
+                        if (model.PageBanners.Any())
                         {
-                            foreach (var item in model.Page.PageBanners)
+                            foreach (var item in model.PageBanners)
                             {
                                 pageBanners.Add(new PageBanner()
                                 {
@@ -271,22 +257,16 @@ namespace OnlineAuction.Services.Pages
                     #region Update Fields
 
                     pageEntity.SpecificationId = (int)PageType.Gallery;
-                    pageEntity.Rank = model.Page.Rank;
-                    pageEntity.ParentId = model.Page.ParentId;
-                    pageEntity.IsActive = model.Page.IsActive;
-                    pageEntity.IsFooter = model.Page.IsFooter;
-                    pageEntity.IsMain = model.Page.IsMain;
-                    pageEntity.RedirectionLink = model.Page.RedirectionLink;
-
-                    pageEntity.Title_tr = model.Page.Title_tr;
-                    pageEntity.Keywords_tr = model.Page.Keywords_tr;
-                    pageEntity.Description_tr = model.Page.Description_tr;
-                    pageEntity.Detail_tr = model.Page.Detail_tr;
-
-                    pageEntity.Title_en = model.Page.Title_en;
-                    pageEntity.Keywords_en = model.Page.Keywords_en;
-                    pageEntity.Description_en = model.Page.Description_en;
-                    pageEntity.Detail_en = model.Page.Detail_en;
+                    pageEntity.ParentId = model.ParentId;
+                    pageEntity.IsActive = model.IsActive;
+                    pageEntity.IsFooter = model.IsFooter;
+                    pageEntity.IsMain = model.IsMain;
+                    pageEntity.RedirectionLink = model.RedirectionLink;
+                    pageEntity.Title = model.Title;
+                    pageEntity.Keywords = model.Keywords;
+                    pageEntity.Description = model.Description;
+                    pageEntity.Detail = model.Detail;
+                    pageEntity.Rank = model.Rank;
 
                     #endregion
 
@@ -297,9 +277,9 @@ namespace OnlineAuction.Services.Pages
                     {
                         #region Prepare Page Banner Model
 
-                        if (model.Page.PageBanners.Any())
+                        if (model.PageBanners.Any())
                         {
-                            foreach (var item in model.Page.PageBanners)
+                            foreach (var item in model.PageBanners)
                             {
                                 pageBanners.Add(new PageBanner()
                                 {
@@ -357,29 +337,24 @@ namespace OnlineAuction.Services.Pages
             {
                 try
                 {
-                    var page = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Pages>().GetFirstOrDefault(predicate: x => x.Id == model.Page.Id);
+                    var page = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Pages>().GetFirstOrDefault(predicate: x => x.Id == model.Id);
 
                     if (page != null)
                     {
                         #region Update Fields
 
-                        page.ParentId = model.Page.ParentId;
-                        page.IsActive = model.Page.IsActive;
-                        page.IsFooter = model.Page.IsFooter;
-                        page.IsMain = model.Page.IsMain;
-                        page.RedirectionLink = model.Page.RedirectionLink;
-                        page.SpecificationId = model.Page.SpecificationId;
+                        page.ParentId = model.ParentId;
+                        page.IsActive = model.IsActive;
+                        page.IsFooter = model.IsFooter;
+                        page.IsMain = model.IsMain;
+                        page.RedirectionLink = model.RedirectionLink;
+                        page.SpecificationId = model.SpecificationId;
 
-                        page.Title_tr = model.Page.Title_tr;
-                        page.Keywords_tr = model.Page.Keywords_tr;
-                        page.Description_tr = model.Page.Description_tr;
-                        page.Detail_tr = model.Page.Detail_tr;
-
-                        page.Title_en = model.Page.Title_en;
-                        page.Keywords_en = model.Page.Keywords_en;
-                        page.Description_en = model.Page.Description_en;
-                        page.Detail_en = model.Page.Detail_en;
-                        page.Rank = model.Page.Rank;
+                        page.Title = model.Title;
+                        page.Keywords = model.Keywords;
+                        page.Description = model.Description;
+                        page.Detail = model.Detail;
+                        page.Rank = model.Rank;
 
                         #endregion
 
@@ -388,9 +363,9 @@ namespace OnlineAuction.Services.Pages
                         var result = _unitOfWork.SaveChanges();
                         if (result > 0)
                         {
-                            if (model.Page.PageBanners.Any())
+                            if (model.PageBanners.Any())
                             {
-                                foreach (var item in model.Page.PageBanners)
+                                foreach (var item in model.PageBanners)
                                 {
                                     var pageBanner = _unitOfWork.GetRepository<PageBanner>().GetFirstOrDefault(predicate: x => x.Id == item.Id);
                                     if (pageBanner != null)
@@ -454,28 +429,24 @@ namespace OnlineAuction.Services.Pages
             {
                 try
                 {
-                    var page = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Pages>().GetFirstOrDefault(predicate: x => x.Id == model.Page.Id);
+                    var page = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Pages>().GetFirstOrDefault(predicate: x => x.Id == model.Id);
 
                     if (page != null)
                     {
                         #region Update Fields
 
-                        page.Rank = model.Page.Rank;
-                        page.IsActive = model.Page.IsActive;
-                        page.IsFooter = model.Page.IsFooter;
-                        page.IsMain = model.Page.IsMain;
-                        page.RedirectionLink = model.Page.RedirectionLink;
                         page.SpecificationId = (int)PageType.Gallery;
 
-                        page.Title_tr = model.Page.Title_tr;
-                        page.Keywords_tr = model.Page.Keywords_tr;
-                        page.Description_tr = model.Page.Description_tr;
-                        page.Detail_tr = model.Page.Detail_tr;
-
-                        page.Title_en = model.Page.Title_en;
-                        page.Keywords_en = model.Page.Keywords_en;
-                        page.Description_en = model.Page.Description_en;
-                        page.Detail_en = model.Page.Detail_en;
+                        page.ParentId = model.ParentId;
+                        page.IsActive = model.IsActive;
+                        page.IsFooter = model.IsFooter;
+                        page.IsMain = model.IsMain;
+                        page.RedirectionLink = model.RedirectionLink;
+                        page.Title = model.Title;
+                        page.Keywords = model.Keywords;
+                        page.Description = model.Description;
+                        page.Detail = model.Detail;
+                        page.Rank = model.Rank;
 
 
                         #endregion
@@ -485,9 +456,9 @@ namespace OnlineAuction.Services.Pages
                         var result = _unitOfWork.SaveChanges();
                         if (result > 0)
                         {
-                            if (model.Page.PageBanners.Any())
+                            if (model.PageBanners.Any())
                             {
-                                foreach (var item in model.Page.PageBanners)
+                                foreach (var item in model.PageBanners)
                                 {
                                     var pageBanner = _unitOfWork.GetRepository<PageBanner>().GetFirstOrDefault(predicate: x => x.Id == item.Id);
                                     if (pageBanner != null)
@@ -548,10 +519,10 @@ namespace OnlineAuction.Services.Pages
 
             try
             {
-                var page = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Pages>().GetFirstOrDefault(predicate: x => x.Id == model.Page.Id);
+                var page = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Pages>().GetFirstOrDefault(predicate: x => x.Id == model.Id);
                 if (page != null)
                 {
-                    page.IsMain = model.Page.IsMain;
+                    page.IsMain = model.IsMain;
                     _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Pages>().Update(page);
 
                     var result = _unitOfWork.SaveChanges();
@@ -588,37 +559,30 @@ namespace OnlineAuction.Services.Pages
 
             try
             {
-                var pages = _unitOfWork.GetRepository<Data.DbEntity.Pages>().GetAll().ToList();
 
-                if (pages.Any())
+                var page = _unitOfWork.GetRepository<Data.DbEntity.Pages>().GetFirstOrDefault(predicate: x => x.Id == model.Id);
+                if (page != null)
                 {
-                    foreach (var item in model.Pages)
-                    {
-                        var page = pages.FirstOrDefault(predicate: x => x.Id == item.Id);
-                        if (page != null)
-                        {
-                            page.Rank = item.Rank;
-                            _unitOfWork.GetRepository<Data.DbEntity.Pages>().Update(page);
-                        }
-                    }
-
-                    int result = _unitOfWork.SaveChanges();
-
-                    if (result > 0)
-                    {
-                        returnModel.IsSuccess = true;
-                        returnModel.Message = "Sayfa başarıyla düzenlendi";
-                    }
-                    else
-                    {
-                        returnModel.IsSuccess = false;
-                        returnModel.Message = "Sayfa başarıyla düzenlenemdi";
-                    }
+                    page.Rank = model.Rank;
+                    _unitOfWork.GetRepository<Data.DbEntity.Pages>().Update(page);
                 }
                 else
                 {
                     returnModel.IsSuccess = false;
                     returnModel.Message = "Sayfa bulunamadı";
+                }
+
+                int result = _unitOfWork.SaveChanges();
+
+                if (result > 0)
+                {
+                    returnModel.IsSuccess = true;
+                    returnModel.Message = "Sayfa başarıyla düzenlendi";
+                }
+                else
+                {
+                    returnModel.IsSuccess = false;
+                    returnModel.Message = "Sayfa başarıyla düzenlenemdi";
                 }
             }
             catch (Exception ex)

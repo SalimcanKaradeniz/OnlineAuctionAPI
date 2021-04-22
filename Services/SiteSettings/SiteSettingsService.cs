@@ -65,43 +65,26 @@ namespace OnlineAuction.Services.SiteSettingsService
             }
         }
 
-        public ReturnModel<object> Update(SiteSettingsRequestModel model/*, IFormFile logo*/)
+        public ReturnModel<object> Update(SiteSettingsModel model, IFormFile logo)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
             try
             {
-                var siteSetting = GetSiteSettingsById(model.Settings.Id);
+                var siteSetting = GetSiteSettingsById(model.Id);
 
                 if (siteSetting != null)
                 {
-                    siteSetting.Title = model.Settings.Title;
-                    siteSetting.Description = model.Settings.Description;
-                    siteSetting.CellPhone = model.Settings.CellPhone;
-                    siteSetting.LandPhone = model.Settings.LandPhone;
-                    siteSetting.Fax = model.Settings.Fax;
-                    siteSetting.Email = model.Settings.Email;
-                    siteSetting.Address = model.Settings.Address;
-                    siteSetting.FacebookUrl = model.Settings.FacebookUrl;
-                    siteSetting.InstagramUrl = model.Settings.InstagramUrl;
-                    siteSetting.TwitterUrl = model.Settings.TwitterUrl;
-                    siteSetting.LinkedinUrl = model.Settings.LinkedinUrl;
-                    siteSetting.PinterestUrl = model.Settings.PinterestUrl;
-                    siteSetting.OtherSocialMediaUrl = model.Settings.OtherSocialMediaUrl;
-                    siteSetting.Map = model.Settings.Map;
-                    siteSetting.ComissionRate = model.Settings.ComissionRate;
-                    siteSetting.TaxRate = model.Settings.TaxRate;
-                    siteSetting.IsActive = model.Settings.IsActive;
-
-                    //if (!string.IsNullOrEmpty(model.Logo))
-                    //{
-                    //    siteSetting.Logo = model.Logo;
-                    //}
-                    //else
-                    //{
-                    //    if (logo != null)
-                    //        siteSetting.Logo = _fileService.FileUplod(logo);
-                    //}
+                    siteSetting.LangId = model.LangId;
+                    if (!string.IsNullOrEmpty(model.Logo))
+                    {
+                        siteSetting.Logo = model.Logo;
+                    }
+                    else
+                    {
+                        if (logo != null)
+                            siteSetting.Logo = _fileService.FileUplod(logo);
+                    }
 
                     _unitOfWork.GetRepository<SiteSettings>().Update(siteSetting);
 

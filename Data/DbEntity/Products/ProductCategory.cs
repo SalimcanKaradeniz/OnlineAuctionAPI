@@ -19,11 +19,13 @@ namespace OnlineAuction.Data.DbEntity
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        public int LangId { get; set; }
         [MaxLength]
         public string Title_tr { get; set; }
         [MaxLength]
         public string Title_en { get; set; }
         public bool IsActive { get; set; }
+        public int? Rank { get; set; }
         public DateTime CreatedAt { get; set; }
 
         public List<Products> Products { get; set; }

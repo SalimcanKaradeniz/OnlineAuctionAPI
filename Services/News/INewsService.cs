@@ -11,9 +11,9 @@ namespace OnlineAuction.Services.News
         List<OnlineAuction.Data.DbEntity.News> GetNews();
         List<OnlineAuction.Data.DbEntity.News> GetActiveNews();
         OnlineAuction.Data.DbEntity.News GetNewsById(int id);
-        ReturnModel<object> Add(NewsRequestModel model);
-        ReturnModel<object> Update(NewsRequestModel news);
-        ReturnModel<object> NewIsActiveUpdate(NewsRequestModel model);
+        ReturnModel<object> Add(NewsModel model);
+        ReturnModel<object> Update(NewsModel news);
+        ReturnModel<object> NewIsActiveUpdate(NewsModel model);
         ReturnModel<object> DeleteAll();
         ReturnModel<object> Delete(int id);
     }

@@ -66,7 +66,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/sitesettings/update")]
-        public IActionResult SiteSettingsUpdate([FromBody] SiteSettingsRequestModel model)
+        public IActionResult SiteSettingsUpdate([FromForm] SiteSettingsModel model, IFormFile logo)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -78,17 +78,18 @@ namespace WebAPI.Controllers
                 return BadRequest(returnModel);
             }
 
-            //string existLogo = Request.Form["logo"];
+            string existLogo = Request.Form["logo"];
 
-            //model.Logo = existLogo;
+            model.Logo = existLogo;
 
-            returnModel = _siteSettingsService.Update(model /*logo*/);
+            returnModel = _siteSettingsService.Update(model, logo);
 
             if (returnModel.IsSuccess)
                 return Ok(returnModel);
             else
                 return Conflict(returnModel);
         }
+
 
         [HttpPost]
         [Route("/sitesettings/delete/{id}")]
@@ -326,6 +327,28 @@ namespace WebAPI.Controllers
             }
 
             returnModel = _languageService.Update(model);
+
+            if (returnModel.IsSuccess)
+                return Ok(returnModel);
+            else
+                return Conflict(returnModel);
+        }
+
+        [HttpPost]
+        [Route("/languages/isactiveupdate")]
+        public IActionResult LanguagesIsActiveUpdate([FromBody] OnlineAuction.Data.DbEntity.Languages model)
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+
+            if (!ModelState.IsValid)
+            {
+                returnModel.IsSuccess = false;
+                returnModel.Message = "Lütfen zorunlu alanları doldurunuz";
+
+                return BadRequest(returnModel);
+            }
+
+            returnModel = _languageService.LanguageIsActiveUpdate(model);
 
             if (returnModel.IsSuccess)
                 return Ok(returnModel);

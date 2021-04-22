@@ -1,80 +1,56 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using OnlineAuction.Core.Models;
-using OnlineAuction.Data.Model;
 using OnlineAuction.Data.Models;
-using OnlineAuction.Services.News;
+using OnlineAuction.Services.Artists;
+using OnlineAuction.Services.Exhibitions;
 
 namespace WebAPI.Controllers
 {
     [ApiController]
     [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
-    public class NewsController : Controller
+    public class ExhibitionsController : ControllerBase
     {
-        private readonly INewsService _newsService;
-        public NewsController(INewsService newsService)
+        private readonly IExhibitionsService _exhibitionsService;
+        public ExhibitionsController(IExhibitionsService exhibitionsService)
         {
-            _newsService = newsService;
+            _exhibitionsService = exhibitionsService;
         }
 
         [HttpGet]
-        [Route("/news")]
-        public IActionResult GetNews()
+        [Route("/exhibitions")]
+        public IActionResult GetExhibitions()
         {
-            return Ok(_newsService.GetNews());
+            return Ok(_exhibitionsService.GetExhibitions());
         }
 
         [HttpGet]
-        [Route("/news/{id}")]
-        public IActionResult GetNewsById([FromRoute]int id)
+        [Route("/exhibitions/{id}")]
+        public IActionResult GetExhibitionById([FromRoute]int id)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
             if (id <= 0)
             {
                 returnModel.IsSuccess = false;
-                returnModel.Message = "Haber bulunamadı";
+                returnModel.Message = "Sergi bulunamadı";
                 return BadRequest(returnModel);
             }
 
-            return Ok(_newsService.GetNewsById(id));
+            return Ok(_exhibitionsService.GetExhibitionById(id));
         }
 
         [HttpGet]
-        [Route("/activenews")]
-        public IActionResult GetActiveNews()
+        [Route("/activeexhibitions")]
+        public IActionResult GetActiveExhibitions()
         {
-            return Ok(_newsService.GetActiveNews());
+            return Ok(_exhibitionsService.GetActiveExhibitions());
         }
 
         [HttpPost]
-        [Route("/news/add")]
-        public IActionResult Add([FromForm] NewsModel model)
-        {
-            ReturnModel<object> returnModel = new ReturnModel<object>();
-
-            if (!ModelState.IsValid)
-            {
-                returnModel.IsSuccess = false;
-                returnModel.Message = "Lütfen zorunlu alanları doldurunuz";
-
-                return BadRequest(returnModel);
-            }
-
-            returnModel = _newsService.Add(model);
-
-            if (returnModel.IsSuccess)
-                return Ok(returnModel);
-            else
-                return Conflict(returnModel);
-        }
-
-        [HttpPost]
-        [Route("/news/update")]
-        public IActionResult Update([FromForm] NewsModel model)
+        [Route("/exhibitions/add")]
+        public IActionResult Add([FromBody] ExhibitionsRequestModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -86,7 +62,7 @@ namespace WebAPI.Controllers
                 return BadRequest(returnModel);
             }
 
-            returnModel = _newsService.Update(model);
+            returnModel = _exhibitionsService.Add(model);
 
             if (returnModel.IsSuccess)
                 return Ok(returnModel);
@@ -95,8 +71,8 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("/news/isactiveupdate")]
-        public IActionResult NewIsActiveUpdate([FromForm] NewsModel model)
+        [Route("/exhibitions/update")]
+        public IActionResult Update([FromBody] ExhibitionsRequestModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -108,7 +84,7 @@ namespace WebAPI.Controllers
                 return BadRequest(returnModel);
             }
 
-            returnModel = _newsService.NewIsActiveUpdate(model);
+            returnModel = _exhibitionsService.Update(model);
 
             if (returnModel.IsSuccess)
                 return Ok(returnModel);
@@ -117,7 +93,29 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("/news/delete/{id}")]
+        [Route("/exhibitions/isactiveupdate")]
+        public IActionResult ExhibitionsIsActiveUpdate([FromBody] ExhibitionsRequestModel model)
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+
+            if (!ModelState.IsValid)
+            {
+                returnModel.IsSuccess = false;
+                returnModel.Message = "Lütfen zorunlu alanları doldurunuz";
+
+                return BadRequest(returnModel);
+            }
+
+            returnModel = _exhibitionsService.ExhibitionsIsActiveUpdate(model);
+
+            if (returnModel.IsSuccess)
+                return Ok(returnModel);
+            else
+                return Conflict(returnModel);
+        }
+
+        [HttpPost]
+        [Route("/exhibitions/delete/{id}")]
         public IActionResult Delete([FromRoute] int id)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
@@ -125,12 +123,12 @@ namespace WebAPI.Controllers
             if (id <= 0)
             {
                 returnModel.IsSuccess = false;
-                returnModel.Message = "Sayfa bulunamadı";
+                returnModel.Message = "Sergi bulunamadı";
 
                 return BadRequest(returnModel);
             }
 
-            returnModel = _newsService.Delete(id);
+            returnModel = _exhibitionsService.Delete(id);
 
             if (returnModel.IsSuccess)
                 return Ok(returnModel);
@@ -139,12 +137,12 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        [Route("/news/deleteall")]
+        [Route("/exhibitions/deleteall")]
         public IActionResult DeleteAll()
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
-            returnModel = _newsService.DeleteAll();
+            returnModel = _exhibitionsService.DeleteAll();
 
             if (returnModel.IsSuccess)
                 return Ok(returnModel);

@@ -116,6 +116,50 @@ namespace OnlineAuction.Services.Languages
             }
         }
 
+        public ReturnModel<object> LanguageIsActiveUpdate(OnlineAuction.Data.DbEntity.Languages model)
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+
+            try
+            {
+                var language = GetLangaugeById(model.Id);
+
+                if (language != null)
+                {
+                    language.IsActive = model.IsActive;
+
+                    _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Languages>().Update(language);
+
+                    int result = _unitOfWork.SaveChanges();
+
+                    if (result > 0)
+                    {
+                        returnModel.IsSuccess = true;
+                        returnModel.Message = "Dil düzenlendi";
+                        return returnModel;
+                    }
+                    else
+                    {
+                        returnModel.IsSuccess = false;
+                        returnModel.Message = "Dil düzenlenirken hata oluştu";
+                        return returnModel;
+                    }
+                }
+                else
+                {
+                    returnModel.IsSuccess = false;
+                    returnModel.Message = "Dil bulunamadı";
+                    return returnModel;
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.InsertLog(userId: _appContext.UserId, serviceProvider: _serviceProvider, _appSettings: _appSettings);
+                returnModel.IsSuccess = false;
+                returnModel.Message = "Dil düzenlenirken hata oluştu";
+                return returnModel;
+            }
+        }
         public ReturnModel<object> Delete(int id)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();

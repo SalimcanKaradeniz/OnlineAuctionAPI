@@ -6,19 +6,14 @@ using System.Text;
 
 namespace OnlineAuction.Data.Models
 {
-    public class WordsRequestModel 
-    {
-        public WordsModel Words { get; set; }
-    }
-
-    public class WordsModel
+    public class WordsRequestModel
     {
         public int Id { get; set; }
+        public int LangId { get; set; }
         [MaxLength(500)]
         public string Sef { get; set; }
         [MaxLength(500)]
-        public string Value_tr { get; set; }
-        [MaxLength(500)]
-        public string Value_en { get; set; }
+        public string Value { get; set; }
+        public int? Rank { get; set; }
     }
 }

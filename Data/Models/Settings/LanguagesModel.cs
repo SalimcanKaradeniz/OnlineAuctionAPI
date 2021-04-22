@@ -6,23 +6,18 @@ using System.Text;
 
 namespace OnlineAuction.Data.Models
 {
-    public class ProductCategoryModel
+    public class LanguagesModel
     {
-        public ProductCategoryModel()
+        public LanguagesModel()
         {
-            this.IsActive = false;
             this.CreatedAt = DateTime.Now;
         }
 
         public int Id { get; set; }
-        public int LangId { get; set; }
-        [MaxLength]
-        public string Title_tr { get; set; }
-        [MaxLength]
-        public string Title_en { get; set; }
+        [MaxLength(50)]
+        public string Name { get; set; }
+        public string Code { get; set; }
         public bool IsActive { get; set; }
-        public int? Rank { get; set; }
         public DateTime CreatedAt { get; set; }
     }
 }
-

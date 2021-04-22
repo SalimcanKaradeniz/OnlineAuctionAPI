@@ -54,7 +54,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/artists/add")]
-        public IActionResult Add([FromBody] ArtistsRequestModel model)
+        public IActionResult Add([FromForm] ArtistsRequestModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 

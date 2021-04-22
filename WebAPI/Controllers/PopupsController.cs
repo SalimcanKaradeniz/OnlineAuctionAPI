@@ -49,7 +49,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/popups/add")]
-        public IActionResult Add([FromBody] PopupsRequestModel model)
+        public IActionResult Add([FromForm] PopupsModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -71,7 +71,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/popups/update")]
-        public IActionResult Update([FromBody] PopupsRequestModel model)
+        public IActionResult Update([FromForm] PopupsModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -93,7 +93,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/popups/isactiveupdate")]
-        public IActionResult PopupIsActiveUpdate([FromBody] PopupsRequestModel model)
+        public IActionResult PopupIsActiveUpdate([FromForm] PopupsModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 

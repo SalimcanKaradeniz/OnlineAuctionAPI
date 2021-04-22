@@ -11,9 +11,9 @@ namespace OnlineAuction.Services.Popups
         List<OnlineAuction.Data.DbEntity.Popups> GetPopups();
         List<OnlineAuction.Data.DbEntity.Popups> GetActivePopups();
         OnlineAuction.Data.DbEntity.Popups GetPopupById(int id);
-        ReturnModel<object> Add(PopupsRequestModel model);
-        ReturnModel<object> Update(PopupsRequestModel model);
-        ReturnModel<object> PopupIsActiveUpdate(PopupsRequestModel model);
+        ReturnModel<object> Add(PopupsModel model);
+        ReturnModel<object> Update(PopupsModel model);
+        ReturnModel<object> PopupIsActiveUpdate(PopupsModel model);
         ReturnModel<object> Delete(int id);
         ReturnModel<object> DeleteAll();
     }

@@ -10,9 +10,11 @@ namespace OnlineAuction.Services.Products
     {
         List<OnlineAuction.Data.DbEntity.Products> GetProducts();
         OnlineAuction.Data.DbEntity.Products GetProductById(int id);
-        ReturnModel<object> Add(ProductRequestModel model);
-        ReturnModel<object> Update(ProductRequestModel model);
+        ReturnModel<object> Add(ProductsModel model);
+        ReturnModel<object> Update(ProductsModel model);
+        ReturnModel<object> ProductIsActiveUpdate(ProductsModel model);
         ReturnModel<object> Delete(int id);
+        ReturnModel<object> DeleteAll();
         List<OnlineAuction.Data.DbEntity.ProductTypes> GetProductTypes();
     }
 }

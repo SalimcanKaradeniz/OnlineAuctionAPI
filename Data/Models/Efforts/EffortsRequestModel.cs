@@ -4,18 +4,15 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace OnlineAuction.Data.DbEntity
+namespace OnlineAuction.Data.Models
 {
-    [Table("Efforts")]
-    public class Efforts
+    public class EffortsRequestModel
     {
-        public Efforts()
+        public EffortsRequestModel()
         {
-            this.EffortPictures = new List<EffortPictures>();
+            this.EffortPictures = new List<EffortPicturesModel>();
         }
-
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        
         public int Id { get; set; }
         public int LangId { get; set; }
         [MaxLength(250)]
@@ -39,8 +36,8 @@ namespace OnlineAuction.Data.DbEntity
         public string PictureAbout { get; set; }
         public DateTime CreatedAt { get; set; }
 
-        public Artists Artist { get; set; }
-        public Exhibitions Exhibition { get; set; }
-        public List<EffortPictures> EffortPictures { get; set; }
+        public ArtistsModel Artist { get; set; }
+        public ExhibitionsModel Exhibition { get; set; }
+        public List<EffortPicturesModel> EffortPictures { get; set; }
     }
 }

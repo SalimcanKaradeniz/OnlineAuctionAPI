@@ -12,7 +12,7 @@ namespace OnlineAuction.Services.SiteSettingsService
     {
         public List<SiteSettings> GetSiteSettings();
         ReturnModel<object> Add(SiteSettings model);
-        ReturnModel<object> Update(SiteSettingsRequestModel model/*, IFormFile logo*/);
+        ReturnModel<object> Update(SiteSettingsModel model, IFormFile logo);
         ReturnModel<object> Delete(int id);
         SiteSettings GetSiteSettingsById(int id);
     }

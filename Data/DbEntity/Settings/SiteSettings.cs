@@ -12,12 +12,17 @@ namespace OnlineAuction.Data.DbEntity
     {
         public SiteSettings()
         {
-            this.CreatedAt = DateTime.Now;
+            this.ComissionRate = 0m;
+            this.TaxRate = 0;
+            this.IsActive = false;
         }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Required]
         public int Id { get; set; }
+        public int LangId { get; set; }
+
         [MaxLength(250)]
         public string Title { get; set; }
         [MaxLength(250)]
@@ -46,10 +51,19 @@ namespace OnlineAuction.Data.DbEntity
         public string OtherSocialMediaUrl { get; set; }
         [MaxLength]
         public string Map { get; set; }
+        [MaxLength]
         public string Logo { get; set; }
-        public decimal? ComissionRate { get; set; }
-        public int? TaxRate { get; set; }
+        [Required]
+        public decimal ComissionRate { get; set; }
+        [Required]
+        public int TaxRate { get; set; }
+        [Required]
         public bool IsActive { get; set; }
+        [Required]
         public DateTime CreatedAt { get; set; }
+        [MaxLength(500)]
+        public string GoogleRecaptchaSecretKey { get; set; }
+        [MaxLength(500)]
+        public string GoogleRecaptchaSiteKey { get; set; }
     }
 }

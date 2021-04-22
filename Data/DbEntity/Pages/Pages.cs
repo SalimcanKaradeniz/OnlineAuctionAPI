@@ -20,24 +20,17 @@ namespace OnlineAuction.Data.DbEntity
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        public int LangId { get; set; }
         public int ParentId { get; set; }
         public int? Rank { get; set; }
         [MaxLength(250)]
-        public string Title_tr { get; set; }
+        public string Title { get; set; }
         [MaxLength(250)]
-        public string Title_en { get; set; }
+        public string Keywords { get; set; }
         [MaxLength(250)]
-        public string Keywords_tr { get; set; }
-        [MaxLength(250)]
-        public string Keywords_en { get; set; }
-        [MaxLength(250)]
-        public string Description_tr { get; set; }
-        [MaxLength(250)]
-        public string Description_en { get; set; }
+        public string Description { get; set; }
         [MaxLength]
-        public string Detail_tr { get; set; }
-        [MaxLength]
-        public string Detail_en { get; set; }
+        public string Detail { get; set; }
         [MaxLength(500)]
         public string RedirectionLink { get; set; }
         public int SpecificationId { get; set; }

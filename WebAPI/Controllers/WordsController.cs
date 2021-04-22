@@ -44,7 +44,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/words/add")]
-        public IActionResult Add([FromBody] WordsRequestModel model)
+        public IActionResult Add([FromForm] WordsRequestModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 

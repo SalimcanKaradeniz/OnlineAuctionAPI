@@ -171,7 +171,7 @@ namespace OnlineAuction.Services.Users
                     user.DistrictName = model.User.DistrictName;
                     user.Address = model.User.Address;
                     user.IsActive = model.User.IsActive;
-                    user.MemberType = model.User.MemberType;
+                    user.UserType = model.User.UserType;
 
                     _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Users>().Update(user);
 

@@ -45,25 +45,22 @@ namespace OnlineAuction.Services.News
         {
             return _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.News>().GetFirstOrDefault(predicate: x => x.Id == id);
         }
-        public ReturnModel<object> Add(NewsRequestModel model)
+        public ReturnModel<object> Add(NewsModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
             OnlineAuction.Data.DbEntity.News newEntity = new OnlineAuction.Data.DbEntity.News();
 
             try
             {
-                newEntity.IsActive = model.News.IsActive;
-                newEntity.Picture = model.News.Picture;
-                newEntity.StartDate = model.News.StartDate;
-                newEntity.EndDate = model.News.EndDate;
-
-                newEntity.Title_tr = model.News.Title_tr;
-                newEntity.ShortDescription_tr = model.News.ShortDescription_tr;
-                newEntity.Detail_tr = model.News.Detail_tr;
-
-                newEntity.Title_en = model.News.Title_en;
-                newEntity.ShortDescription_en = model.News.ShortDescription_en;
-                newEntity.Detail_en = model.News.Detail_en;
+                newEntity.IsActive = model.IsActive;
+                newEntity.Picture = model.Picture;
+                newEntity.StartDate = model.StartDate;
+                newEntity.EndDate = model.EndDate;
+                newEntity.Title = model.Title;
+                newEntity.ShortDescription = model.ShortDescription;
+                newEntity.Detail = model.Detail;
+                newEntity.Rank = model.Rank;
+                newEntity.LangId = model.LangId;
 
                 _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.News>().Insert(newEntity);
 
@@ -89,28 +86,25 @@ namespace OnlineAuction.Services.News
                 return returnModel;
             }
         }
-        public ReturnModel<object> Update(NewsRequestModel model)
+        public ReturnModel<object> Update(NewsModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
             try
             {
-                var newsById = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.News>().GetFirstOrDefault(predicate: x => x.Id == model.News.Id);
+                var newsById = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.News>().GetFirstOrDefault(predicate: x => x.Id == model.Id);
 
                 if (newsById != null)
                 {
-                    newsById.Picture = model.News.Picture;
-                    newsById.IsActive = model.News.IsActive;
-                    newsById.StartDate = model.News.StartDate;
-                    newsById.EndDate = model.News.EndDate;
+                    newsById.Picture = model.Picture;
+                    newsById.IsActive = model.IsActive;
+                    newsById.StartDate = model.StartDate;
+                    newsById.EndDate = model.EndDate;
 
-                    newsById.Title_tr = model.News.Title_tr;
-                    newsById.ShortDescription_tr = model.News.ShortDescription_tr;
-                    newsById.Detail_tr = model.News.Detail_tr;
-
-                    newsById.Title_en = model.News.Title_en;
-                    newsById.ShortDescription_en = model.News.ShortDescription_en;
-                    newsById.Detail_en = model.News.Detail_en;
+                    newsById.Title = model.Title;
+                    newsById.ShortDescription = model.ShortDescription;
+                    newsById.Detail = model.Detail;
+                    newsById.Rank = model.Rank;
 
                     _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.News>().Update(newsById);
 
@@ -143,16 +137,16 @@ namespace OnlineAuction.Services.News
                 return returnModel;
             }
         }
-        public ReturnModel<object> NewIsActiveUpdate(NewsRequestModel model)
+        public ReturnModel<object> NewIsActiveUpdate(NewsModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
             try
             {
-                var newData = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.News>().GetFirstOrDefault(predicate: x => x.Id == model.News.Id);
+                var newData = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.News>().GetFirstOrDefault(predicate: x => x.Id == model.Id);
                 if (newData != null)
                 {
-                    newData.IsActive = model.News.IsActive;
+                    newData.IsActive = model.IsActive;
                     _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.News>().Update(newData);
 
                     var result = _unitOfWork.SaveChanges();

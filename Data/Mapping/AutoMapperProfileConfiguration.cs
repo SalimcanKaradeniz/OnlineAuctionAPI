@@ -13,6 +13,7 @@ namespace OnlineAuction.Data.Mapping
         public AutoMapperProfileConfiguration()
         {
             CreateMap<Artists, ArtistsModel>().ReverseMap();
+            CreateMap<Exhibitions, ExhibitionsModel>().ReverseMap();
             CreateMap<Users, UserModel>().ReverseMap();
         }
     }

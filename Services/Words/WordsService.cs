@@ -45,9 +45,10 @@ namespace OnlineAuction.Services.Words
 
             try
             {
-                words.Sef = ReplaceTurkishCharecter(model.Words.Value_tr).Replace(",", "-").Replace(".", "-").Replace(" ","-");
-                words.Value_tr = model.Words.Value_tr;
-                words.Value_en = model.Words.Value_en;
+                words.Sef = ReplaceTurkishCharecter(model.Value).Replace(",", "-").Replace(".", "-").Replace(" ","-");
+                words.Value = model.Value;
+                words.Rank = model.Rank;
+                words.LangId = model.LangId;
 
                 _unitOfWork.GetRepository<Data.DbEntity.Words>().Insert(words);
 
@@ -80,12 +81,13 @@ namespace OnlineAuction.Services.Words
 
             try
             {
-                var word = _unitOfWork.GetRepository<Data.DbEntity.Words>().GetFirstOrDefault(predicate: x=> x.Id == model.Words.Id);
+                var word = _unitOfWork.GetRepository<Data.DbEntity.Words>().GetFirstOrDefault(predicate: x=> x.Id == model.Id);
 
                 if (word != null)
                 {
-                    word.Value_en = model.Words.Value_en;
-                    word.Value_tr = model.Words.Value_tr;
+                    word.Value = model.Value;
+                    word.Rank = model.Rank;
+                    word.LangId = model.LangId;
 
                     _unitOfWork.GetRepository<Data.DbEntity.Words>().Update(word);
                     int result = _unitOfWork.SaveChanges();

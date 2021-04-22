@@ -53,13 +53,13 @@ namespace OnlineAuction.Services.News
 
             try
             {
-                artistEntity.NameSurname = model.Artist.NameSurName;
-                artistEntity.Picture = model.Artist.Picture;
-                artistEntity.IsActive = model.Artist.IsActive;
-                artistEntity.BirthDate = model.Artist.BirthDate;
-                artistEntity.DateOfDeath = model.Artist.DateOfDeath;
-                artistEntity.About_tr = model.Artist.About_tr;
-                artistEntity.About_en = model.Artist.About_en;
+                artistEntity.NameSurname = model.NameSurname;
+                artistEntity.Picture = model.Picture;
+                artistEntity.IsActive = model.IsActive;
+                artistEntity.BirthDate = model.BirthDate;
+                artistEntity.DateOfDeath = model.DateOfDeath;
+                artistEntity.About_tr = model.About;
+                artistEntity.Rank = model.Rank;
 
                 _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Artists>().Insert(artistEntity);
 
@@ -91,17 +91,17 @@ namespace OnlineAuction.Services.News
 
             try
             {
-                var artist = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Artists>().GetFirstOrDefault(predicate: x => x.Id == model.Artist.Id);
+                var artist = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Artists>().GetFirstOrDefault(predicate: x => x.Id == model.Id);
 
                 if (artist != null)
                 {
-                    artist.NameSurname = model.Artist.NameSurName;
-                    artist.Picture = model.Artist.Picture;
-                    artist.IsActive = model.Artist.IsActive;
-                    artist.BirthDate = model.Artist.BirthDate;
-                    artist.DateOfDeath = model.Artist.DateOfDeath;
-                    artist.About_tr = model.Artist.About_tr;
-                    artist.About_en = model.Artist.About_en;
+                    artist.NameSurname = model.NameSurname;
+                    artist.Picture = model.Picture;
+                    artist.IsActive = model.IsActive;
+                    artist.BirthDate = model.BirthDate;
+                    artist.DateOfDeath = model.DateOfDeath;
+                    artist.About_tr = model.About;
+                    artist.Rank = model.Rank;
 
                     _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Artists>().Update(artist);
 
@@ -236,10 +236,10 @@ namespace OnlineAuction.Services.News
 
             try
             {
-                var artist = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Artists>().GetFirstOrDefault(predicate: x => x.Id == model.Artist.Id);
+                var artist = _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Artists>().GetFirstOrDefault(predicate: x => x.Id == model.Id);
                 if (artist != null)
                 {
-                    artist.IsActive = model.Artist.IsActive;
+                    artist.IsActive = model.IsActive;
                     _unitOfWork.GetRepository<OnlineAuction.Data.DbEntity.Artists>().Update(artist);
 
                     var result = _unitOfWork.SaveChanges();

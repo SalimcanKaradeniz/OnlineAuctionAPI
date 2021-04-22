@@ -11,21 +11,17 @@ namespace OnlineAuction.Data.Models
         }
 
         public int Id { get; set; }
+        public int LangId { get; set; }
         [MaxLength(250)]
-        public string Title_tr { get; set; }
+        public string Title { get; set; }
         [MaxLength(250)]
-        public string Title_en { get; set; }
+        public string ShortDescription { get; set; }
         [MaxLength(250)]
-        public string ShortDescription_tr { get; set; }
-        [MaxLength(250)]
-        public string ShortDescription_en { get; set; }
-        [MaxLength(250)]
-        public string Detail_tr { get; set; }
-        [MaxLength(250)]
-        public string Detail_en { get; set; }
+        public string Detail { get; set; }
         [MaxLength]
         public string Picture { get; set; }
         public bool IsActive { get; set; }
+        public int? Rank { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public DateTime CreatedAt { get; set; }

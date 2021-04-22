@@ -144,7 +144,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/productcategory/add")]
-        public IActionResult ProductCategoryAdd([FromBody] ProductCategoryRequestModel model)
+        public IActionResult ProductCategoryAdd([FromForm] ProductCategoryModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -166,7 +166,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/productcategory/update")]
-        public IActionResult ProductCategoryUpdate([FromBody] ProductCategoryRequestModel model)
+        public IActionResult ProductCategoryUpdate([FromForm] ProductCategoryModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -188,7 +188,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/productcategory/isactiveupdate")]
-        public IActionResult CategoryIsActiveUpdate([FromBody] ProductCategoryRequestModel model)
+        public IActionResult CategoryIsActiveUpdate([FromForm] ProductCategoryModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -260,7 +260,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/products/add")]
-        public IActionResult ProductAdd([FromBody] ProductRequestModel model)
+        public IActionResult ProductAdd([FromForm] ProductsModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -282,7 +282,7 @@ namespace WebAPI.Controllers
 
         [HttpPost]
         [Route("/products/update")]
-        public IActionResult ProductUpdate([FromBody] ProductRequestModel model)
+        public IActionResult ProductUpdate([FromForm] ProductsModel model)
         {
             ReturnModel<object> returnModel = new ReturnModel<object>();
 
@@ -302,6 +302,27 @@ namespace WebAPI.Controllers
                 return Conflict(returnModel);
         }
 
+        [HttpPost]
+        [Route("/products/isactiveupdate")]
+        public IActionResult ProductIsActiveUpdate([FromForm] ProductsModel model)
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+
+            if (!ModelState.IsValid)
+            {
+                returnModel.IsSuccess = false;
+                returnModel.Message = "Lütfen zorunlu alanları doldurunuz";
+
+                return BadRequest(returnModel);
+            }
+
+            returnModel = _productService.ProductIsActiveUpdate(model);
+
+            if (returnModel.IsSuccess)
+                return Ok(returnModel);
+            else
+                return Conflict(returnModel);
+        }
 
         [HttpPost]
         [Route("/product/delete/{id}")]
@@ -318,6 +339,20 @@ namespace WebAPI.Controllers
             }
 
             returnModel = _productService.Delete(id);
+
+            if (returnModel.IsSuccess)
+                return Ok(returnModel);
+            else
+                return Conflict(returnModel);
+        }
+
+        [HttpPost]
+        [Route("/products/deleteall")]
+        public IActionResult ProductsDeleteAll()
+        {
+            ReturnModel<object> returnModel = new ReturnModel<object>();
+
+            returnModel = _productService.DeleteAll();
 
             if (returnModel.IsSuccess)
                 return Ok(returnModel);

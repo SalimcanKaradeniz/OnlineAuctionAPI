@@ -12,6 +12,7 @@ namespace OnlineAuction.Data.DbEntity
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        public int LangId { get; set; }
         public int EffortId { get; set; }
         [MaxLength]
         public string Url { get; set; }

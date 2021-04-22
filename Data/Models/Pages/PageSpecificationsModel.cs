@@ -14,6 +14,7 @@ namespace OnlineAuction.Data.Models
         }
 
         public int Id { get; set; }
+        public int LangId { get; set; }
         [MaxLength(250)]
         public string Name { get; set; }
         public bool IsActive { get; set; }

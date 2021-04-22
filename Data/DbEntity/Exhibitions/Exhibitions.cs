@@ -11,22 +11,20 @@ namespace OnlineAuction.Data.DbEntity
     {
         public Exhibitions()
         {
+            this.CreatedAt = DateTime.Now;
             this.Efforts = new List<Efforts>();
         }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+        public int LangId { get; set; }
         [MaxLength(250)]
-        public string TR_Title { get; set; }
-        [MaxLength(250)]
-        public string EN_Title { get; set; }
+        public string Title { get; set; }
         [MaxLength(250)]
         public string ExhibitionPlace { get; set; }
         [MaxLength(500)]
-        public string TR_ShortDescription { get; set; }
-        [MaxLength(500)]
-        public string EN_ShortDescription { get; set; }
+        public string ShortDescription { get; set; }
         [MaxLength(500)]
         public string LongDescription { get; set; }
         [MaxLength]
@@ -34,7 +32,8 @@ namespace OnlineAuction.Data.DbEntity
         [MaxLength]
         public string PdfLink { get; set; }
         public bool? IsOnline { get; set; }
-        public bool? IsActive { get; set; }
+        public bool IsActive { get; set; }
+        public int? Rank { get; set; }
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
         public DateTime CreatedAt { get; set; }

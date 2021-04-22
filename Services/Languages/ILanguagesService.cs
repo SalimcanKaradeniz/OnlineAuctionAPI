@@ -12,6 +12,7 @@ namespace OnlineAuction.Services.Languages
         public List<OnlineAuction.Data.DbEntity.Languages> GetActiveLanguages();
         ReturnModel<object> Add(OnlineAuction.Data.DbEntity.Languages language);
         ReturnModel<object> Update(OnlineAuction.Data.DbEntity.Languages language);
+        ReturnModel<object> LanguageIsActiveUpdate(OnlineAuction.Data.DbEntity.Languages model);
         ReturnModel<object> Delete(int id);
         OnlineAuction.Data.DbEntity.Languages GetLangaugeById(int id);
     }

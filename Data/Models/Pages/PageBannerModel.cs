@@ -9,6 +9,7 @@ namespace OnlineAuction.Data.Models
     public class PageBannerModel
     {
         public int Id { get; set; }
+        public int LangId { get; set; }
         public int PageId { get; set; }
         [MaxLength]
         public string PictureUrl { get; set; }
